@@ -1,2 +1,5 @@
 mashaZ -- 2018-05-17 13:58
 In database.py, wrote functions to create tables and add users.
+
+mashaZ -- 2018-05-18 13:37
+Tested functions, created database and tables.

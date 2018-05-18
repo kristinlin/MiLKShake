@@ -10,8 +10,8 @@ TABLE CREATION
 Database
 '''
 
-def tableCreation():
-    f="app.db"
+def table_creation():
+    f="../data/app.db"
     db = sqlite3.connect(f) #open if f exists, otherwise create
     c = db.cursor()         #facilitates db ops
 
@@ -52,8 +52,8 @@ def check_password(hashed_password, user_password):
     return password == hashlib.sha256(key.encode()+user_password.encode()).hexdigest()
 
 #add a user to user table
-def addUser(new_username, new_password, new_type):
-    f="app.db"
+def add_user(new_username, new_password):
+    f="../data/app.db"
     db = sqlite3.connect(f) #open if f exists, otherwise create
     c = db.cursor()         #facilitates db ops
 
@@ -64,8 +64,8 @@ def addUser(new_username, new_password, new_type):
     db.close()
 
 #if username exist, return true
-def checkUsername(userN):
-    f="data/restaurant_reservations.db"
+def check_username(userN):
+    f="../data/app.db"
     db = sqlite3.connect(f)
     c = db.cursor()
     users = c.execute('SELECT username FROM users;')
@@ -75,3 +75,9 @@ def checkUsername(userN):
             result = True
     db.close()
     return result
+
+if __name__ == '__main__':
+    #table_creation()
+    user = 'testa'
+    if not check_username(user):
+        add_user('testa', 'hi')
