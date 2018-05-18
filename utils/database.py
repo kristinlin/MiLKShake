@@ -11,7 +11,7 @@ Database
 '''
 
 def table_creation():
-    f="../data/app.db"
+    f="data/app.db"
     db = sqlite3.connect(f) #open if f exists, otherwise create
     c = db.cursor()         #facilitates db ops
 
@@ -38,10 +38,8 @@ def table_creation():
     db.commit()
     db.close()
 
-
-#ADD VALUES TO TABLES
-
-#user table stuff
+    
+#USER TABLE STUFF
 
 def hash_password(password):
     key = uuid.uuid4().hex
@@ -53,7 +51,7 @@ def check_password(hashed_password, user_password):
 
 #add a user to user table
 def add_user(new_username, new_password):
-    f="../data/app.db"
+    f="data/app.db"
     db = sqlite3.connect(f) #open if f exists, otherwise create
     c = db.cursor()         #facilitates db ops
 
@@ -65,7 +63,7 @@ def add_user(new_username, new_password):
 
 #if username exist, return true
 def check_username(userN):
-    f="../data/app.db"
+    f="data/app.db"
     db = sqlite3.connect(f)
     c = db.cursor()
     users = c.execute('SELECT username FROM users;')
@@ -75,6 +73,30 @@ def check_username(userN):
             result = True
     db.close()
     return result
+
+#NOTES TABLE STUFF
+
+#adds a note to table
+#reminder_time MUST be in format "yyyy-mm-dd hh:mm:ss"
+#pinned and archived are booleans, username, note_type, color, and remider_repeat are strings
+#note_type is either "list" or "notlist"
+
+def add_note(username, note_type, color, pinned, archived, reminder_time, remider_repeat):
+    f="data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    #write code to get note_id and order_id
+
+    c.execute('INSERT INTO notes VALUES (?,?,?,?,?,?,?,?,?)',[note_id, username, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat])
+    db.commit()
+    db.close()
+
+#LABELS TABLE STUFF
+
+#LIST TABLE STUFF
+
+#NOTLIST TABLE STUFF
 
 if __name__ == '__main__':
     #table_creation()
