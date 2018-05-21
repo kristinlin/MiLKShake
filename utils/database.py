@@ -78,17 +78,59 @@ def check_username(userN):
 
 #adds a note to table
 #reminder_time MUST be in format "yyyy-mm-dd hh:mm:ss"
-#pinned and archived are booleans, username, note_type, color, and remider_repeat are strings
+#pinned and archived are booleans, username, note_type, color, remider_repeat, and image (link) are strings
 #note_type is either "list" or "notlist"
+#content is a list if note_type is a list, and a string if note_type is notlist
 
-def add_note(username, note_type, color, pinned, archived, reminder_time, remider_repeat):
+def add_note(username, note_type, color, pinned, archived, reminder_time, remider_repeat, content, image):
     f="data/app.db"
     db = sqlite3.connect(f)
     c = db.cursor()
 
-    #write code to get note_id and order_id
+    #gets next id for note
+    def next_note_id():
+        command = "SELECT note_id FROM notes;"
+        info = c.execute(command)
+
+        pre_id = -1
+        for ids in info:
+            print(ids)
+            pre_id = max(ids or [-1])
+        next_id = pre_id + 1
+
+        print next_id
+        return next_id
+
+    #gets the next order id (determines placement of that username's notes)
+    def next_order_id():
+        command = "SELECT order_id FROM notes WHERE username=" + username +";"
+        info = c.execute(command)
+
+        pre_id = -1
+        for ids in info:
+            print (ids)
+            pre_id = max(ids or [-1])
+        next_id = pre_id + 1
+
+        print next_id
+        return next_id
+
+    note_id = next_note_id()
+    order_id = next_order_id()
 
     c.execute('INSERT INTO notes VALUES (?,?,?,?,?,?,?,?,?)',[note_id, username, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat])
+
+    if note_type = 'notlist':
+        print content
+        c.execute('INSERT INTO notlist VALUES (?,?,?)', [note_id, content, image])
+    else:
+        i = 0
+        while i < len(content):
+            item = content[i]
+            print item
+            c.execute('INSERT INTO list VALUES (?,?,?,?)', [note_id, item, i, image])
+            i += 1
+
     db.commit()
     db.close()
 
@@ -103,3 +145,5 @@ if __name__ == '__main__':
     user = 'testa'
     if not check_username(user):
         add_user('testa', 'hi')
+
+    add_note('testa', 'notlist', 'red', False, False) # not done
