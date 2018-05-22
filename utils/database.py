@@ -4,6 +4,15 @@ import hashlib
 import uuid
 
 
+'''f="data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    #insert code
+    
+    db.commit()
+    db.close()'''
+
 #==========================================================
 '''
 TABLE CREATION
@@ -136,6 +145,17 @@ def add_note(username, note_type, color, pinned, archived, content, reminder_tim
 
     db.commit()
     db.close()
+
+def get_notes(username):
+    f="data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    #insert code
+    
+    db.commit()
+    db.close()
+    
 
 #LABELS TABLE STUFF
 
