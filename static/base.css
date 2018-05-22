@@ -1,0 +1,16 @@
+#navbar {
+    background-color: #8daa91
+}
+.sidebar {
+    padding:10px;
+}
+.label {
+    text-indent:10px;
+}
+
+.flashed {
+    color: red;
+    font-weight:bold;
+    background-color: rgba(0, 0, 0, 0.5);
+    font-style:italics;
+}
