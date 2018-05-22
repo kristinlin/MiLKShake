@@ -81,8 +81,10 @@ def check_username(userN):
 #pinned and archived are booleans, username, note_type, color, remider_repeat, and image (link) are strings
 #note_type is either "list" or "notlist"
 #content is a list if note_type is a list, and a string if note_type is notlist
+#checked_items is a list of Trues and False indicating which checkboxes have been checked (for lists only)
 
-def add_note(username, note_type, color, pinned, archived, reminder_time, remider_repeat, content, image):
+#does not catch errors in input yet
+def add_note(username, note_type, color, pinned, archived, content, reminder_time=None, reminder_repeat=None, checked_items=None, image=None):
     f="data/app.db"
     db = sqlite3.connect(f)
     c = db.cursor()
@@ -103,7 +105,7 @@ def add_note(username, note_type, color, pinned, archived, reminder_time, remide
 
     #gets the next order id (determines placement of that username's notes)
     def next_order_id():
-        command = "SELECT order_id FROM notes WHERE username=" + username +";"
+        command = 'SELECT order_id FROM notes WHERE username="' + username +'";'
         info = c.execute(command)
 
         pre_id = -1
@@ -120,15 +122,16 @@ def add_note(username, note_type, color, pinned, archived, reminder_time, remide
 
     c.execute('INSERT INTO notes VALUES (?,?,?,?,?,?,?,?,?)',[note_id, username, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat])
 
-    if note_type = 'notlist':
+    if note_type == 'notlist':
         print content
         c.execute('INSERT INTO notlist VALUES (?,?,?)', [note_id, content, image])
     else:
         i = 0
         while i < len(content):
             item = content[i]
+            checked = checked_items[i]
             print item
-            c.execute('INSERT INTO list VALUES (?,?,?,?)', [note_id, item, i, image])
+            c.execute('INSERT INTO list VALUES (?,?,?,?,?)', [note_id, item, i, checked, image])
             i += 1
 
     db.commit()
@@ -146,4 +149,5 @@ if __name__ == '__main__':
     if not check_username(user):
         add_user('testa', 'hi')
 
-    add_note('testa', 'notlist', 'red', False, False) # not done
+    add_note('testa', 'notlist', 'red', False, False, 'Hi')
+    add_note('testa', 'list', 'white', True, True, ['one', 'two', 'three'],'2018-06-01 12:00:00', 'once', [False, False, False], 'https://testlink.jpg')
