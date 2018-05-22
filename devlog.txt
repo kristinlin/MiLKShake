@@ -12,3 +12,6 @@ Started function to add a note
 
 parabS -- 2018-05-21 21:25
 Worked on flask and templates
+
+linK -- 2018-05-22 01:35
+Got the sidebar and navbar to work together
