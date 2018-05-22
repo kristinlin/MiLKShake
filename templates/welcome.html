@@ -5,6 +5,16 @@ Hello, {{username}}! <br>
 </h1>
 <h2> Cool Dashboard will be here! </h2>
 <br>
+<h3> Add a new note! </h3>
+<form method = "POST" action = "/note">
+  Note:<br>
+  <textarea rows = "15" cols = "50" name = "content" value=""></textarea>
+  <br><br>
+  <button type = "submit"> Submit </button>
+</form>
+<br>
+<br>
+<h3> Other Notes Below </h3>
 <form method="POST" action="/logout/">
   <input type="submit" value="Logout">
 </form>

@@ -40,6 +40,13 @@ def logout():
     flash(username + ' has successfully logged out')
     return redirect(url_for('root'))
 
+#submitting a new note
+@app.route("/note", methods = ['POST'])
+def newNote():
+    content = request.form['content']
+    print content
+    #add note to database
+    return redirect(url_for('welcome'))
 
 if __name__ == '__main__':
     app.debug = True

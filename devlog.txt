@@ -4,5 +4,11 @@ In database.py, wrote functions to create tables and add users.
 mashaZ -- 2018-05-18 13:37
 Tested functions, created database and tables.
 
+parabS -- 2018-05-18 13:47
+Added basic templates
+
 mashaZ -- 2018-05-18 14:00
 Started function to add a note
+
+parabS -- 2018-05-21 21:25
+Worked on flask and templates
