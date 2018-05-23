@@ -19,3 +19,6 @@ Got the sidebar and navbar to work together
 mashaZ -- 2018-05-22 13:50
 Tested and debugged function to add note - will improve later
 
+parabS -- 2018-05-22 20:40
+Worked on login and sign up
+
