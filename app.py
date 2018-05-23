@@ -15,7 +15,7 @@ def root():
 def login():
     return render_template('login.html',title='Login')
 
-@app.route('/signup/', methods = ['POST','GET'])
+@app.route('/signup', methods = ['POST','GET'])
 def signup():
     username = request.form['user']
     password = request.form['pass']
@@ -32,7 +32,7 @@ def signup():
     #flash(user + 'succesfully created')
     return redirect(url_for('login'))
 
-@app.route('/welcome/', methods = ['POST','GET'])
+@app.route('/welcome', methods = ['POST','GET'])
 def welcome():
     if 'username' in session:
         return render_template('welcome.html',username=session['username'])
@@ -45,11 +45,11 @@ def welcome():
     if password == '':
         flash('Please enter a password')
         return redirect(url_for('login'))
-    if username in dict:
-        if dict[username] == password:
-            session['username'] = username
-            flash('Successful login')
-            return redirect(url_for('welcome'))
+#    if username in dict:
+ #       if dict[username] == password:
+    session['username'] = username
+    flash('Successful login')
+    return redirect(url_for('welcome'))
     if username in dict:
         flash('Bad password')
         return redirect(url_for('login'))

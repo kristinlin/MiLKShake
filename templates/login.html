@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% block content1 %}
+<br><br>
 <div class="row">
-  <div class="col-4">
-    <div class="float-right">
-      <br><br>
+  <div class="col-6 border-right">
+    <div class="float-right mr-5">
       <h1> LOGIN </h1>
       <br>
-      <form method="POST" action="/welcome/">
+      <form method="POST" action="/welcome">
 	<h4>Username</h4>
 	<input type="text" name="user" value=""><br><br>
 	<h4>Password</h4>
@@ -15,10 +15,12 @@
       </form>
     </div>
     <br>
-    <div class="float-right">
+  </div>
+  <div class="col-6">
+    <div class="float-left ml-5">
       <h1> Sign Up </h1>
       <br>
-      <form method="POST" action="/signup/">
+      <form method="POST" action="/signup">
 	<h4> Create a Username </h4>
 	<input type="text" name="user" value=""><br><br>
 	<h4> Create a Password </h4>
