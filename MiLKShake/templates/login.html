@@ -4,28 +4,24 @@
 <div class="row">
   <div class="col-6 border-right">
     <div class="float-right mr-5">
-      <h1> LOGIN </h1>
+      <h1 class="heading"> LOG IN </h1>
       <br>
       <form method="POST" action="/welcome">
-	<h4>Username</h4>
-	<input type="text" name="user" value=""><br><br>
-	<h4>Password</h4>
-	<input type="password" name="pass" value=""><br><br>
-	<input type="submit" value="Log In" >
+	<input type="text" name="user" placeholder="username" value=""><br><br>
+	<input type="password" name="pass" placeholder="password" value=""><br><br>
+	<input class="btn btn-primary" type="submit" value="Log In" >
       </form>
     </div>
     <br>
   </div>
   <div class="col-6">
     <div class="float-left ml-5">
-      <h1> Sign Up </h1>
+      <h1 class="heading"> SIGN UP </h1>
       <br>
       <form method="POST" action="/signup">
-	<h4> Create a Username </h4>
-	<input type="text" name="user" value=""><br><br>
-	<h4> Create a Password </h4>
-	<input type="password" name="pass" value=""><br><br>
-	<input type="submit" value="Sign Up">
+	<input type="text" name="user" placeholder="Create a username..." value=""><br><br>
+	<input type="password" name="pass" value="" placeholder="Create a password..."><br><br>
+	<input class="btn btn-warning" type="submit" value="Sign Up">
       </form>
     </div>
   </div>

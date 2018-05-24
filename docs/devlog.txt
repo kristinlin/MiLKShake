@@ -24,3 +24,6 @@ Worked on login and sign up
 
 parabS -- 2018-05-23 2:50
 Worked on login/sign up screen as well as home page of notes
+
+linK -- 2018-05-24 10:35
+Deployed site, finished css for login/signup and working on welcome notes

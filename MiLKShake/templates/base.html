@@ -4,7 +4,8 @@
     <title>{{title}}</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link type="text/css" href="/static/base.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Bungee" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Maven+Pro|Bungee" rel="stylesheet">
+
   </head>
 
   <body>
@@ -16,7 +17,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <br>
-      <a class="navbar-brand" href="/" style="font-family:'Bungee', cursive; font-size:30px">TEAM MILKSHAKE NOTES</a>
+      <a class="navbar-brand" href="/" style="font-family:'Bungee', cursive; font-size:20px">TEAM MILKSHAKE NOTES</a>
       <form class="form-inline">
 	<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
 	<button class="btn btn-outline-primary success my-2 my-sm-0" type="submit">Search</button>
@@ -28,7 +29,7 @@
       <div class="col-">
 	<nav class="navbar navbar-dark bg-dark" style="height:100vh">
 	  <div class="collapse" id="navbarToggleExternalContent">
-	    <div class="bg-dark p-4" style="height:100vh; width:275px">
+	    <div class="bg-dark p-4" style="height:100vh; width:200px">
 	      <a href="/"><h4 class="text-white sidebar">Notes</h4></a> 
 	      <h4 class="text-white sidebar" >Labels</h4>
 	      <span class="text-muted ml-3 sidebar">Insert list.</span>
@@ -37,27 +38,27 @@
 	  </div>
 	</nav>
       </div>
-      
       <div class="container mt-5 mb-5">
 	<!-- content -->
 	<div class="messages">
 	  {% set messages = get_flashed_messages() %}
 	  {% for message in messages %}
 	  <div class="text-center flashed">
-	    {{message}} </h1>
-</div>
-{% endfor %}
-</div>
-{% block content1 %}
+	    {{message}} 
+	  </div>
+	  {% endfor %}
+	</div>
+	{% block content1 %}
 	<h2>Welcome to Google Keep by Team MiLKShake!</h2>
-	
+
 	<h3><a href="/login">Login</a></h3>
 	{% endblock %}
       </div>
     </div>
+
   </body>
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
 
 </html>

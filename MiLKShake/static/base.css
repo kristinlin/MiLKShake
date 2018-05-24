@@ -8,6 +8,11 @@
     text-indent:10px;
 }
 
+.heading {
+    font-family: 'Maven Pro', sans-serif;
+    font-weight: bold
+}
+
 .flashed {
     color: red;
     font-weight:bold;
