@@ -73,4 +73,4 @@ var initNotes = function(){
 
 initNotes();
 
-addNoteButton.addEventListener("click", addNote);
+addNoteButton.addEventListener("click", addNote); 
