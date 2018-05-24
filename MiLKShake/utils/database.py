@@ -146,15 +146,60 @@ def add_note(username, note_type, color, pinned, archived, content, reminder_tim
     db.commit()
     db.close()
 
+#returns a list of dictionaries which contain note_id, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat, image, and content (the keys are these words).
+#if note is a list, content is a list of tuples which contain the list item, the item number (the order in which they are displayed), and checked status (boolean).
+
 def get_notes(username):
     f="data/app.db"
     db = sqlite3.connect(f)
     c = db.cursor()
 
-    #insert code
+    notes_list = []
+
+    command = 'SELECT note_id, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat FROM notes WHERE username="' + username +'";'
+    info = c.execute(command)
+
+    for note in info:
+        print note
+        
+        d = {}
+        d['note_id'] = note[0]
+        d['note_type'] = note[1]
+        d['order_id'] = note[2]
+        d['color'] = note[3]
+        d['pinned'] = (note[4] == 1)
+        d['archived'] = (note[5] == 1)
+        d['reminder_time'] = note[6] #format: 'YYYYMMDD hh:mm:ss'
+        d['reminder_repeat'] = note[7]
+
+        notes_list.append(d)
+
+    for d in notes_list:
+        note_id = d['note_id']
+        image = None
+        if d['note_type'] == 'list':
+            content = []
+            
+            com = 'SELECT item, item_num, checked, image FROM list WHERE note_id="' + str(note_id) + '";'
+            i = c.execute(com)
+
+            for item_info in i:
+                content.append((item_info[0], item_info[1], (item_info[2] == 1)))
+                image = item_info[3]
+
+        else:
+            content = ''
+            com = 'SELECT content, image FROM notlist WHERE note_id="' + str(note_id) + '";'
+            i = c.execute(com)
+            for stuff in i:
+                content = stuff[0]
+                image = stuff[1]
+
+        #add content and image to dictionary
+        d['image'] = image
+        d['content'] = content
     
-    db.commit()
-    db.close()
+    return notes_list
     
 
 #LABELS TABLE STUFF
@@ -169,5 +214,7 @@ if __name__ == '__main__':
     if not check_username(user):
         add_user('testa', 'hi')
 
-    add_note('testa', 'notlist', 'red', False, False, 'Hi')
-    add_note('testa', 'list', 'white', True, True, ['one', 'two', 'three'],'2018-06-01 12:00:00', 'once', [False, False, False], 'https://testlink.jpg')
+    #add_note('testa', 'notlist', 'red', False, False, 'Hi')
+    #add_note('testa', 'list', 'white', True, True, ['one', 'two', 'three'],'2018-06-01 12:00:00', 'once', [False, False, False], 'https://testlink.jpg')
+
+    print (get_notes('testa'))

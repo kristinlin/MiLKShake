@@ -27,3 +27,6 @@ Worked on login/sign up screen as well as home page of notes
 
 linK -- 2018-05-24 10:35
 Deployed site, finished css for login/signup and working on welcome notes
+
+mashaZ -- 2018-05-24 13:42
+Wrote and tested function to get notes from database
