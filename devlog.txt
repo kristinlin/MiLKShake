@@ -22,3 +22,5 @@ Tested and debugged function to add note - will improve later
 parabS -- 2018-05-22 20:40
 Worked on login and sign up
 
+parabS -- 2018-05-23 2:50
+Worked on login/sign up screen as well as home page of notes
