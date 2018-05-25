@@ -1,5 +1,4 @@
 import sqlite3   #enable control of an sqlite database
-import csv       #facilitates CSV I/O
 import hashlib
 import uuid
 
@@ -12,6 +11,26 @@ import uuid
     
     db.commit()
     db.close()'''
+
+#functions to write:
+#edit note content
+#delete note
+#change color
+#change to list
+#change to notlist
+#check boxes
+#uncheck boxes
+#pin
+#unpin
+#archive
+#unarchive
+#create new label
+#add label to note
+#remove label
+#add reminder
+#remove reminder
+#add image
+#remove image
 
 #==========================================================
 '''
@@ -105,11 +124,11 @@ def add_note(username, note_type, color, pinned, archived, content, reminder_tim
 
         pre_id = -1
         for ids in info:
-            print(ids)
+            #print(ids)
             pre_id = max(ids or [-1])
         next_id = pre_id + 1
 
-        print next_id
+        #print next_id
         return next_id
 
     #gets the next order id (determines placement of that username's notes)
@@ -119,11 +138,11 @@ def add_note(username, note_type, color, pinned, archived, content, reminder_tim
 
         pre_id = -1
         for ids in info:
-            print (ids)
+            #print (ids)
             pre_id = max(ids or [-1])
         next_id = pre_id + 1
 
-        print next_id
+        #print next_id
         return next_id
 
     note_id = next_note_id()
@@ -132,14 +151,14 @@ def add_note(username, note_type, color, pinned, archived, content, reminder_tim
     c.execute('INSERT INTO notes VALUES (?,?,?,?,?,?,?,?,?)',[note_id, username, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat])
 
     if note_type == 'notlist':
-        print content
+        #print content
         c.execute('INSERT INTO notlist VALUES (?,?,?)', [note_id, content, image])
     else:
         i = 0
         while i < len(content):
             item = content[i]
             checked = checked_items[i]
-            print item
+            #print item
             c.execute('INSERT INTO list VALUES (?,?,?,?,?)', [note_id, item, i, checked, image])
             i += 1
 
@@ -147,7 +166,7 @@ def add_note(username, note_type, color, pinned, archived, content, reminder_tim
     db.close()
 
 #returns a list of dictionaries which contain note_id, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat, image, and content (the keys are these words).
-#if note is a list, content is a list of tuples which contain the list item, the item number (the order in which they are displayed), and checked status (boolean).
+#if note is a list, content is a list of tuples which contain the list item, the item number (the order in which they are displayed), and checked status (boolean), in that order.
 
 def get_notes(username):
     f="data/app.db"
@@ -160,7 +179,7 @@ def get_notes(username):
     info = c.execute(command)
 
     for note in info:
-        print note
+        #print note
         
         d = {}
         d['note_id'] = note[0]
@@ -200,13 +219,8 @@ def get_notes(username):
         d['content'] = content
     
     return notes_list
-    
 
-#LABELS TABLE STUFF
 
-#LIST TABLE STUFF
-
-#NOTLIST TABLE STUFF
 
 if __name__ == '__main__':
     #table_creation()
