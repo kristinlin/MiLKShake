@@ -1,6 +1,6 @@
 var addNoteButton = document.getElementById("addNote");
 var svg = document.getElementById("svg");
-var curTexts = ["nice", "note", "bye"];
+var curTexts = ["note0","note1"];//["nice", "note", "bye"];
 var noteTexts = [];
 var xcors = [];
 var ycors = [0];
@@ -14,6 +14,25 @@ var notes = d3.select("svg").selectAll("rect").data(noteTexts).enter();
 var texts = d3.select("svg").selectAll("text").data(noteTexts).enter();
 var svgContainer = d3.select("svg")
 
+var getNotes = function(){
+    noteContent = document.getElementById("notes").innerHTML;
+    noteContent = noteContent.replace('[','');
+    noteContent = noteContent.replace(']','');
+    noteContent = noteContent.replace(/u'/g,'"');
+    noteContent = noteContent.replace(/'/g,'"');
+    noteContent = noteContent.replace(/None/g,'"None"');
+    noteContent = noteContent.replace(/True/g,'"True"');
+    noteContent = noteContent.replace(/False/g,'"False"');
+    //console.log(noteContent);
+    notes = JSON.parse(noteContent);
+    //console.log(notes);
+    for (note in notes){
+	//console.log(notes[note]);
+	//console.log(notes[note]['content']);
+	noteContent = notes[note]['content'];
+	curTexts.push(noteContent);
+    }
+}
 
 //take array of notes and display on screen
 var displayNotes = function(){
@@ -69,8 +88,10 @@ var initNotes = function(){
 	curNoteText = curTexts[text];
 	addNote();
     }
+    getNotes();
 }
 
+getNotes();
 initNotes();
 
 addNoteButton.addEventListener("click", addNote); 
