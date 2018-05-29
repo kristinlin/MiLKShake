@@ -39,7 +39,8 @@ Database
 '''
 
 def table_creation():
-    f="data/app.db"
+    DIR = os.path.dirname(__file__) or '.'
+    f= DIR + "/data/app.db"
     db = sqlite3.connect(f) #open if f exists, otherwise create
     c = db.cursor()         #facilitates db ops
 
@@ -79,7 +80,8 @@ def check_password(hashed_password, user_password):
 
 #add a user to user table
 def add_user(new_username, new_password):
-    f="data/app.db"
+    DIR = os.path.dirname(__file__) or '.'
+    f= DIR + "/data/app.db"
     db = sqlite3.connect(f) #open if f exists, otherwise create
     c = db.cursor()         #facilitates db ops
 
@@ -91,7 +93,8 @@ def add_user(new_username, new_password):
 
 #if username exist, return true
 def check_username(userN):
-    f="data/app.db"
+    DIR = os.path.dirname(__file__) or '.'
+    f= DIR + "/data/app.db"
     db = sqlite3.connect(f)
     c = db.cursor()
     users = c.execute('SELECT username FROM users;')
@@ -113,7 +116,8 @@ def check_username(userN):
 
 #does not catch errors in input yet
 def add_note(username, note_type, color, pinned, archived, content, reminder_time=None, reminder_repeat=None, checked_items=None, image=None):
-    f="data/app.db"
+    DIR = os.path.dirname(__file__) or '.'
+    f= DIR + "/data/app.db"
     db = sqlite3.connect(f)
     c = db.cursor()
 
@@ -169,7 +173,8 @@ def add_note(username, note_type, color, pinned, archived, content, reminder_tim
 #if note is a list, content is a list of tuples which contain the list item, the item number (the order in which they are displayed), and checked status (boolean), in that order.
 
 def get_notes(username):
-    f="data/app.db"
+    DIR = os.path.dirname(__file__) or '.'
+    f= DIR + "/data/app.db"
     db = sqlite3.connect(f)
     c = db.cursor()
 
