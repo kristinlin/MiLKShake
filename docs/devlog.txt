@@ -33,3 +33,7 @@ Wrote and tested function to get notes from database
 
 parabS -- 2018-05-28 21:29
 Added note adding functionality
+
+olevskyL -- 2018-05-28-22:25
+Added color attribute from database
+Bug with displaying correct color
