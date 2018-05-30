@@ -14,6 +14,7 @@ import uuid
 
 #functions to write:
 #edit note content
+#edit title
 #delete note
 #change color
 #change to list
@@ -48,7 +49,7 @@ def table_creation():
     c.execute(user_table)
 
     #Create the notes table
-    notes_table = 'CREATE TABLE notes (note_id INTEGER PRIMARY KEY, username TEXT, note_type TEXT, order_id INTEGER, color TEXT, pinned BOOLEAN, archived BOOLEAN, reminder_time DATETIME, reminder_repeat TEXT);'
+    notes_table = 'CREATE TABLE notes (note_id INTEGER PRIMARY KEY, username TEXT, note_title TEXT, note_type TEXT, order_id INTEGER, color TEXT, pinned BOOLEAN, archived BOOLEAN, reminder_time DATETIME, reminder_repeat TEXT);'
     c.execute(notes_table)
 
     #Create the labels table
@@ -127,13 +128,13 @@ def check_login(username, password):
 
 #adds a note to table
 #reminder_time MUST be in format "yyyy-mm-dd hh:mm:ss"
-#pinned and archived are booleans, username, note_type, color, remider_repeat, and image (link) are strings
+#pinned and archived are booleans, username, note_title, note_type, color, remider_repeat, and image (link) are strings
 #note_type is either "list" or "notlist"
 #content is a list if note_type is a list, and a string if note_type is notlist
 #checked_items is a list of Trues and False indicating which checkboxes have been checked (for lists only)
 
 #does not catch errors in input yet
-def add_note(username, note_type, color, pinned, archived, content, reminder_time=None, reminder_repeat=None, checked_items=None, image=None):
+def add_note(username, note_title, note_type, color, pinned, archived, content, reminder_time=None, reminder_repeat=None, checked_items=None, image=None):
     f="data/app.db"    
     db = sqlite3.connect(f)
     c = db.cursor()
@@ -169,7 +170,7 @@ def add_note(username, note_type, color, pinned, archived, content, reminder_tim
     note_id = next_note_id()
     order_id = next_order_id()
 
-    c.execute('INSERT INTO notes VALUES (?,?,?,?,?,?,?,?,?)',[note_id, username, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat])
+    c.execute('INSERT INTO notes VALUES (?,?,?,?,?,?,?,?,?,?)',[note_id, username, note_title, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat])
 
     if note_type == 'notlist':
         #print content
@@ -196,7 +197,7 @@ def get_notes(username):
 
     notes_list = []
 
-    command = 'SELECT note_id, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat FROM notes WHERE username="' + username +'";'
+    command = 'SELECT note_id, note_title, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat FROM notes WHERE username="' + username +'";'
     info = c.execute(command)
 
     for note in info:
@@ -205,12 +206,13 @@ def get_notes(username):
         d = {}
         d['note_id'] = note[0]
         d['note_type'] = note[1]
-        d['order_id'] = note[2]
-        d['color'] = note[3]
-        d['pinned'] = (note[4] == 1)
-        d['archived'] = (note[5] == 1)
-        d['reminder_time'] = note[6] #format: 'YYYYMMDD hh:mm:ss'
-        d['reminder_repeat'] = note[7]
+        d['note_title'] = note[2]
+        d['order_id'] = note[3]
+        d['color'] = note[4]
+        d['pinned'] = (note[5] == 1)
+        d['archived'] = (note[6] == 1)
+        d['reminder_time'] = note[7] #format: 'YYYYMMDD hh:mm:ss'
+        d['reminder_repeat'] = note[8]
 
         notes_list.append(d)
 
@@ -241,6 +243,7 @@ def get_notes(username):
     
     return notes_list
 
+#def edit_note_content(username, note_id, new_content):
 
 
 if __name__ == '__main__':
@@ -253,7 +256,7 @@ if __name__ == '__main__':
     print check_login('testa', 'no')
     print check_login('hi', 'hi')
 
-    #add_note('testa', 'notlist', 'red', False, False, 'Hi')
-    #add_note('testa', 'list', 'white', True, True, ['one', 'two', 'three'],'2018-06-01 12:00:00', 'once', [False, False, False], 'https://testlink.jpg')
+    #add_note('testa','hi', 'notlist', 'red', False, False, 'Hi')
+    #add_note('testa', 'stuff', 'list', 'white', True, True, ['one', 'two', 'three'],'2018-06-01 12:00:00', 'once', [False, False, False], 'https://testlink.jpg')
 
     print (get_notes('testa'))
