@@ -37,3 +37,6 @@ Added note adding functionality
 olevskyL -- 2018-05-28-22:25
 Added color attribute from database
 Bug with displaying correct color
+
+mashaZ -- 2018-05-30 13:45
+Created function to check login info

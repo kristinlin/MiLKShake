@@ -102,6 +102,27 @@ def check_username(userN):
     db.close()
     return result
 
+#checks if login is valid (username must exist and password must match to return True)
+def check_login(username, password):
+    f="data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    command = 'SELECT password FROM users WHERE username="' + username + '";'
+    info = c.execute(command)
+
+    hash_pass = ''
+    
+    for passes in info:
+        hash_pass = passes[0]
+
+    if hash_pass == '':
+        return False
+    
+    db.close()
+
+    return check_password(hash_pass, password)
+
 #NOTES TABLE STUFF
 
 #adds a note to table
@@ -227,6 +248,10 @@ if __name__ == '__main__':
     user = 'testa'
     if not check_username(user):
         add_user('testa', 'hi')
+
+    print check_login('testa', 'hi')
+    print check_login('testa', 'no')
+    print check_login('hi', 'hi')
 
     #add_note('testa', 'notlist', 'red', False, False, 'Hi')
     #add_note('testa', 'list', 'white', True, True, ['one', 'two', 'three'],'2018-06-01 12:00:00', 'once', [False, False, False], 'https://testlink.jpg')
