@@ -56,10 +56,10 @@ def welcome():
         return redirect(url_for('login'))
     else:
         #need to fix the password fxn
-        passCheck = database.check_password(database.hash_password(password),password)
+        passCheck = database.check_login(username,password)
         if passCheck:      
             session['username'] = username
-            flash('Successful login')
+            flash(username + 'has successfully logged in')
             return redirect(url_for('welcome'))
         else:
             flash('Incorrect Password')

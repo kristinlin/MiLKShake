@@ -4,39 +4,42 @@ In database.py, wrote functions to create tables and add users.
 mashaZ -- 2018-05-18 13:37
 Tested functions, created database and tables.
 
-parabS -- 2018-05-18 13:47
+sonalP -- 2018-05-18 13:47
 Added basic templates
 
 mashaZ -- 2018-05-18 14:00
 Started function to add a note
 
-parabS -- 2018-05-21 21:25
+sonalP -- 2018-05-21 21:25
 Worked on flask and templates
 
-linK -- 2018-05-22 01:35
+kristinL -- 2018-05-22 01:35
 Got the sidebar and navbar to work together
 
 mashaZ -- 2018-05-22 13:50
 Tested and debugged function to add note - will improve later
 
-parabS -- 2018-05-22 20:40
+sonalP -- 2018-05-22 20:40
 Worked on login and sign up
 
-parabS -- 2018-05-23 2:50
+sonalP -- 2018-05-23 2:50
 Worked on login/sign up screen as well as home page of notes
 
-linK -- 2018-05-24 10:35
+kristinL -- 2018-05-24 10:35
 Deployed site, finished css for login/signup and working on welcome notes
 
 mashaZ -- 2018-05-24 13:42
 Wrote and tested function to get notes from database
 
-parabS -- 2018-05-28 21:29
+sonalP -- 2018-05-28 21:29
 Added note adding functionality
 
-olevskyL -- 2018-05-28-22:25
+leviO -- 2018-05-28-22:25
 Added color attribute from database
 Bug with displaying correct color
 
 mashaZ -- 2018-05-30 13:45
 Created function to check login info
+
+sonalP -- 2018-05-30 23:23
+Fixed login
