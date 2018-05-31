@@ -3,7 +3,8 @@ import hashlib
 import uuid
 import os
 
-'''f="data/app.db"
+'''f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
     db = sqlite3.connect(f)
     c = db.cursor()
 
@@ -50,7 +51,7 @@ def table_creation():
     c.execute(user_table)
 
     #Create the notes table
-    notes_table = 'CREATE TABLE notes (note_id INTEGER PRIMARY KEY, username TEXT, note_title TEXT, note_type TEXT, order_id INTEGER, color TEXT, pinned BOOLEAN, archived BOOLEAN, reminder_time DATETIME, reminder_repeat TEXT);'
+    notes_table = 'CREATE TABLE notes (note_id INTEGER PRIMARY KEY, username TEXT, note_title TEXT, note_type TEXT, order_id INTEGER, color TEXT, pinned BOOLEAN, archived BOOLEAN, reminder_time DATETIME, reminder_repeat TEXT, image TEXT);'
     c.execute(notes_table)
 
     #Create the labels table
@@ -58,11 +59,11 @@ def table_creation():
     c.execute(labels_table)
 
     #Create the list table
-    list_table = 'CREATE TABLE list (note_id INTEGER, item TEXT, item_num INTEGER, checked BOOLEAN, image TEXT);'
+    list_table = 'CREATE TABLE list (note_id INTEGER, item TEXT, item_num INTEGER, checked BOOLEAN);'
     c.execute(list_table)
 
     #Create the notlist table
-    notlist_table = 'CREATE TABLE notlist (note_id INTEGER, content TEXT, image TEXT);'
+    notlist_table = 'CREATE TABLE notlist (note_id INTEGER, content TEXT);'
     c.execute(notlist_table)
 
     db.commit()
@@ -175,18 +176,18 @@ def add_note(username, note_title, note_type, color, pinned, archived, content, 
     note_id = next_note_id()
     order_id = next_order_id()
 
-    c.execute('INSERT INTO notes VALUES (?,?,?,?,?,?,?,?,?,?)',[note_id, username, note_title, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat])
+    c.execute('INSERT INTO notes VALUES (?,?,?,?,?,?,?,?,?,?,?)',[note_id, username, note_title, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat, image])
 
     if note_type == 'notlist':
         #print content
-        c.execute('INSERT INTO notlist VALUES (?,?,?)', [note_id, content, image])
+        c.execute('INSERT INTO notlist VALUES (?,?)', [note_id, content])
     else:
         i = 0
         while i < len(content):
             item = content[i]
             checked = checked_items[i]
             #print item
-            c.execute('INSERT INTO list VALUES (?,?,?,?,?)', [note_id, item, i, checked, image])
+            c.execute('INSERT INTO list VALUES (?,?,?,?)', [note_id, item, i, checked])
             i += 1
 
     db.commit()
@@ -203,7 +204,7 @@ def get_notes(username):
 
     notes_list = []
 
-    command = 'SELECT note_id, note_title, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat FROM notes WHERE username="' + username +'";'
+    command = 'SELECT note_id, note_title, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat, image FROM notes WHERE username="' + username +'";'
     info = c.execute(command)
 
     for note in info:
@@ -219,37 +220,64 @@ def get_notes(username):
         d['archived'] = (note[6] == 1)
         d['reminder_time'] = note[7] #format: 'YYYYMMDD hh:mm:ss'
         d['reminder_repeat'] = note[8]
+        d['image'] = note[9]
 
         notes_list.append(d)
 
     for d in notes_list:
         note_id = d['note_id']
-        image = None
         if d['note_type'] == 'list':
             content = []
             
-            com = 'SELECT item, item_num, checked, image FROM list WHERE note_id="' + str(note_id) + '";'
+            com = 'SELECT item, item_num, checked FROM list WHERE note_id=' + str(note_id) + ';'
             i = c.execute(com)
 
             for item_info in i:
                 content.append((item_info[0], item_info[1], (item_info[2] == 1)))
-                image = item_info[3]
 
         else:
             content = ''
-            com = 'SELECT content, image FROM notlist WHERE note_id="' + str(note_id) + '";'
+            com = 'SELECT content FROM notlist WHERE note_id=' + str(note_id) + ';'
             i = c.execute(com)
             for stuff in i:
                 content = stuff[0]
-                image = stuff[1]
 
-        #add content and image to dictionary
-        d['image'] = image
+        #add content to dictionary
         d['content'] = content
     
     return notes_list
 
-#def edit_note_content(username, note_id, new_content):
+
+def edit_note_content(note_id, new_content, checks=None):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    command = 'SELECT note_type FROM notes WHERE note_id=' + str(note_id) + ';'
+    info = c.execute(command)
+
+    for types in info:
+        note_type = types[0]
+    
+
+    if note_type == 'list':
+        c.execute('DELETE FROM list WHERE note_id=' + str(note_id) + ';')
+        i = 0
+        while i < len(new_content):
+            new_item = new_content[i]
+            if checks == None:
+                checked = False
+            else:
+                checked = checks[i]
+            c.execute('INSERT INTO list VALUES (?,?,?,?)', [note_id, new_item, i, checked])
+            i += 1
+
+    else:
+        c.execute('UPDATE notlist SET content="' + new_content + '" WHERE note_id=' + str(note_id) + ';')
+
+    db.commit()
+    db.close()
 
 
 if __name__ == '__main__':
@@ -264,5 +292,10 @@ if __name__ == '__main__':
 
     #add_note('testa','hi', 'notlist', 'red', False, False, 'Hi')
     #add_note('testa', 'stuff', 'list', 'white', True, True, ['one', 'two', 'three'],'2018-06-01 12:00:00', 'once', [False, False, False], 'https://testlink.jpg')
+
+    print (get_notes('testa'))
+
+    edit_note_content(0, 'hello')
+    edit_note_content(1, ['uno', 'dos', 'tres'])
 
     print (get_notes('testa'))
