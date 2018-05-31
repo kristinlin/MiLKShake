@@ -1,7 +1,7 @@
 import sqlite3   #enable control of an sqlite database
 import hashlib
 import uuid
-
+import os
 
 '''f="data/app.db"
     db = sqlite3.connect(f)
@@ -40,7 +40,8 @@ Database
 '''
 
 def table_creation():
-    f="data/app.db"
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
     db = sqlite3.connect(f) #open if f exists, otherwise create
     c = db.cursor()         #facilitates db ops
 
@@ -80,7 +81,8 @@ def check_password(hashed_password, user_password):
 
 #add a user to user table
 def add_user(new_username, new_password):
-    f="data/app.db"
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
     db = sqlite3.connect(f) #open if f exists, otherwise create
     c = db.cursor()         #facilitates db ops
 
@@ -92,7 +94,8 @@ def add_user(new_username, new_password):
 
 #if username exist, return true
 def check_username(userN):
-    f="data/app.db"    
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
     db = sqlite3.connect(f)
     c = db.cursor()
     users = c.execute('SELECT username FROM users;')
@@ -105,7 +108,8 @@ def check_username(userN):
 
 #checks if login is valid (username must exist and password must match to return True)
 def check_login(username, password):
-    f="data/app.db"
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
     db = sqlite3.connect(f)
     c = db.cursor()
 
@@ -135,7 +139,8 @@ def check_login(username, password):
 
 #does not catch errors in input yet
 def add_note(username, note_title, note_type, color, pinned, archived, content, reminder_time=None, reminder_repeat=None, checked_items=None, image=None):
-    f="data/app.db"    
+    f=os.path.dirname(__file__) or '.'    
+    f+="/../data/app.db"
     db = sqlite3.connect(f)
     c = db.cursor()
 
@@ -191,7 +196,8 @@ def add_note(username, note_title, note_type, color, pinned, archived, content, 
 #if note is a list, content is a list of tuples which contain the list item, the item number (the order in which they are displayed), and checked status (boolean), in that order.
 
 def get_notes(username):
-    f="data/app.db"    
+    f=os.path.dirname(__file__) or '.'    
+    f+="/../data/app.db"
     db = sqlite3.connect(f)
     c = db.cursor()
 
