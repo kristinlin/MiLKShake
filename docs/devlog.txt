@@ -43,3 +43,6 @@ Created function to check login info
 
 sonalP -- 2018-05-30 23:23
 Fixed login
+
+leviO -- 2018-05-31-13:57
+Started change color functionality
