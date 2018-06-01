@@ -1,6 +1,6 @@
 var addNoteButton = document.getElementById("addNote");
 var svg = d3.select("svg");
-var curTexts = ["note0","note1"];//["nice", "note", "bye"];
+var curTexts = [];
 var noteTexts = [];
 var xcors = [];
 var ycors = [0];
@@ -48,6 +48,7 @@ var displayNotes = function(){
 	.attr("width", noteWidth)
 	.attr("fill", "yellow")
 	.attr("id", function(b, d){return "note" + d})
+	.attr("class", "note");
 }
 
 
@@ -59,7 +60,7 @@ var displayTexts = function(){
 	.attr("y", function(){return ycors[ycors.length-1] + 15})
 	.text(function(b) {return b})
 	.attr("fill", "black")
-}
+	.attr("class", "body")}
 
 //add a new note
 var newNote = function(text){
@@ -110,6 +111,6 @@ var swapYellow = function(){
 getNotes();
 initNotes();
 
-//setColor();
+setColor();
 
 //d3.selectAll("rect").on("mouseover", swapYellow);
