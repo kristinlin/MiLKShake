@@ -76,14 +76,15 @@ def logout():
 def newNote():
     title = request.form['title']
     content = request.form['content']
+    color = request.form['radio']
     print title
     print content
+    print color
     user = session['username']
     note_type = "notlist"
-    color = "blue"
     pinned = True
     archived = False
-    database.add_note(user,note_type,color,pinned,archived,content)
+    database.add_note(user,title,note_type,color,pinned,archived,content)
     return redirect(url_for('welcome'))
 
 if __name__ == '__main__':
