@@ -204,7 +204,7 @@ def get_notes(username):
 
     notes_list = []
 
-    command = 'SELECT note_id, note_title, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat, image FROM notes WHERE username="' + username +'";'
+    command = 'SELECT note_id, note_title, note_type, order_id, color, pinned, reminder_time, reminder_repeat, image FROM notes WHERE username="' + username +'" AND archived=0;'
     info = c.execute(command)
 
     for note in info:
@@ -212,15 +212,14 @@ def get_notes(username):
         
         d = {}
         d['note_id'] = note[0]
-        d['note_type'] = note[1]
-        d['note_title'] = note[2]
+        d['note_title'] = note[1]
+        d['note_type'] =  note[2]
         d['order_id'] = note[3]
         d['color'] = note[4]
         d['pinned'] = (note[5] == 1)
-        d['archived'] = (note[6] == 1)
-        d['reminder_time'] = note[7] #format: 'YYYYMMDD hh:mm:ss'
-        d['reminder_repeat'] = note[8]
-        d['image'] = note[9]
+        d['reminder_time'] = note[6] #format: 'YYYYMMDD hh:mm:ss'
+        d['reminder_repeat'] = note[7]
+        d['image'] = note[8]
 
         notes_list.append(d)
 
