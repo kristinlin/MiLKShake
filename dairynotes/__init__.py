@@ -28,14 +28,19 @@ def signup():
         return redirect(url_for('login'))
     #check if user in database
     #if not, add the user & pass
-    database.add_user(username,password)
-    flash('User created!')    
+    userExists = database.check_username(username)
+    if userExists:
+        flash('User already exists')
+        flash('Please choose a different username')
+    else:
+        database.add_user(username,password)
+        flash('User created!')    
     return redirect(url_for('login'))
 
 @app.route('/welcome', methods = ['POST','GET'])
 def welcome():
     if 'username' in session:
-        notes = database.get_notes(session['username'])
+        notes = database.get_nonarch_notes(session['username'])
         d = {}
         for i in range(0,len(notes)):
             d[str(i)] = notes[i]
@@ -71,9 +76,13 @@ def welcome():
 
 @app.route('/logout/',methods = ['POST','GET'])
 def logout():
-    username = session.pop('username')
-    flash(username + ' has successfully logged out')
-    return redirect(url_for('root'))
+    if 'username' in session:
+        username = session.pop('username')
+        flash(username + ' has successfully logged out')
+        return redirect(url_for('root'))
+    else:
+        flash('Please login first')
+        return redirect(url_for('login'))
 
 #submitting a new note
 @app.route("/note", methods = ['POST'])
@@ -95,7 +104,7 @@ def newNote():
 def archive():
     if 'username' in session:
         #change to archive notes function later
-        notes = database.get_notes(session['username'])
+        notes = database.get_arch_notes(session['username'])
         d = {}
         for i in range(0,len(notes)):
             d[str(i)] = notes[i]
