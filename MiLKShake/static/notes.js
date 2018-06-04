@@ -1,6 +1,7 @@
 var addNoteButton = document.getElementById("addNote");
-var svg = document.getElementById("svg");
-var curTexts = ["note0","note1"];//["nice", "note", "bye"];
+var svg = d3.select("svg");
+var curTexts = [];
+var curTitles = [];
 var noteTexts = [];
 var xcors = [];
 var ycors = [0];
@@ -13,6 +14,8 @@ var curNoteText = "nice";
 var notes = d3.select("svg").selectAll("rect").data(noteTexts).enter();
 var texts = d3.select("svg").selectAll("text").data(noteTexts).enter();
 var svgContainer = d3.select("svg")
+
+var allNotes = svg.append("notes")
 
 //create array of notes from html
 var getNotes = function(){
@@ -31,13 +34,17 @@ var getNotes = function(){
 	//console.log(notes[note]);
 	//console.log(notes[note]['content']);
 	noteContent = notes[note]['content'];
+	noteTitle = notes[note]['title'];
 	curTexts.push(noteContent);
+	curTitles.push(noteTitle);
+	console.log(curTitles);
     }
 }
 
+
 //take array of notes and display on screen
 var displayNotes = function(){
-    var notes = d3.select("svg").selectAll("rect").data(noteTexts).enter();
+    var notes = svg.selectAll("rect").data(noteTexts).enter();
     notes.append("rect")
 	.attr("x", function(b, d){return xcors[d%5]})
 	.attr("y", function(){return ycors[ycors.length-1]})
@@ -45,18 +52,19 @@ var displayNotes = function(){
 	.attr("width", noteWidth)
 	.attr("fill", "yellow")
 	.attr("id", function(b, d){return "note" + d})
+	.attr("class", "note");
 }
 
 
 //take array of texts and display on screen
 var displayTexts = function(){
-    var texts = d3.select("svg").selectAll("text").data(noteTexts).enter();
+    var texts = svg.selectAll("text").data(noteTexts).enter();
     texts.append("text")
 	.attr("x", function(b, d){return xcors[d%5] + 1})
 	.attr("y", function(){return ycors[ycors.length-1] + 15})
 	.text(function(b) {return b})
 	.attr("fill", "black")
-}
+	.attr("class", "body")}
 
 //add a new note
 var newNote = function(text){
@@ -101,12 +109,12 @@ var setColor = function(){
 }
 
 var swapYellow = function(){
-    d3.select(this).style("fill", "yellow");
+    d3.select(this).style("fill", "blue");
 }
 
-setColor();
 getNotes();
 initNotes();
+
 setColor();
 
-//svg.selectAll("rect").style("mouseover", swapYellow);
+//d3.selectAll("rect").on("mouseover", swapYellow);
