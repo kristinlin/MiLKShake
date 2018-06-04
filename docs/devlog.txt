@@ -49,3 +49,6 @@ Started change color functionality
 
 sonalP -- 2018-06-01 00:07
 Fix notes function and added colors on form
+
+sonalP -- 2018-06-04 10:03
+Worked on archive page and fixed sidebar links

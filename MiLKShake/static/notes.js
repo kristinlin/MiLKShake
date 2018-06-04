@@ -1,6 +1,7 @@
 var addNoteButton = document.getElementById("addNote");
 var svg = d3.select("svg");
 var curTexts = [];
+var curTitles = [];
 var noteTexts = [];
 var xcors = [];
 var ycors = [0];
@@ -33,7 +34,10 @@ var getNotes = function(){
 	//console.log(notes[note]);
 	//console.log(notes[note]['content']);
 	noteContent = notes[note]['content'];
+	noteTitle = notes[note]['title'];
 	curTexts.push(noteContent);
+	curTitles.push(noteTitle);
+	console.log(curTitles);
     }
 }
 
