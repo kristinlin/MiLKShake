@@ -193,10 +193,12 @@ def add_note(username, note_title, note_type, color, pinned, archived, content, 
     db.commit()
     db.close()
 
-#returns a list of dictionaries which contain note_id, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat, image, and content (the keys are these words).
+#GET NOTES
+#returns a list of dictionaries which contain note_id, note_type, order_id, color, pinned, reminder_time, reminder_repeat, image, and content (the keys are these words).
 #if note is a list, content is a list of tuples which contain the list item, the item number (the order in which they are displayed), and checked status (boolean), in that order.
 
-def get_notes(username):
+#in between function - do not use in app.py
+def get_notes_temp(username, archived):
     f=os.path.dirname(__file__) or '.'    
     f+="/../data/app.db"
     db = sqlite3.connect(f)
@@ -204,7 +206,7 @@ def get_notes(username):
 
     notes_list = []
 
-    command = 'SELECT note_id, note_title, note_type, order_id, color, pinned, reminder_time, reminder_repeat, image FROM notes WHERE username="' + username +'" AND archived=0;'
+    command = 'SELECT note_id, note_title, note_type, order_id, color, pinned, reminder_time, reminder_repeat, image FROM notes WHERE username="' + username +'" AND archived=' + str(archived) + ';'
     info = c.execute(command)
 
     for note in info:
@@ -246,6 +248,13 @@ def get_notes(username):
     
     return notes_list
 
+#get notes that are NOT archived
+def get_nonarch_notes(username):
+    return get_notes_temp(username, 0)
+
+#get notes that are archived
+def get_arch_notes(username):
+    return get_notes_temp(username, 1)
 
 def edit_note_content(note_id, new_content, checks=None):
     f=os.path.dirname(__file__) or '.'
@@ -292,9 +301,11 @@ if __name__ == '__main__':
     #add_note('testa','hi', 'notlist', 'red', False, False, 'Hi')
     #add_note('testa', 'stuff', 'list', 'white', True, True, ['one', 'two', 'three'],'2018-06-01 12:00:00', 'once', [False, False, False], 'https://testlink.jpg')
 
-    print (get_notes('testa'))
+    print (get_nonarch_notes('testa'))
+    print (get_arch_notes('testa'))
 
     edit_note_content(0, 'hello')
     edit_note_content(1, ['uno', 'dos', 'tres'])
 
-    print (get_notes('testa'))
+    print (get_nonarch_notes('testa'))
+    print (get_arch_notes('testa'))
