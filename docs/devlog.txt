@@ -52,3 +52,6 @@ Fix notes function and added colors on form
 
 sonalP -- 2018-06-04 10:03
 Worked on archive page and fixed sidebar links
+
+linK -- 2018-06-05 12:21
+Worked on toggling to diff note types and toggling note colors
