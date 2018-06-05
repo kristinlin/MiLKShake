@@ -2,7 +2,6 @@ var NOTE = 0;
 var CHECKBOX = 1;
 var IMAGE = 2;
 
-
 var tog1 = document.getElementById("tog1");
 var tog2 = document.getElementById("tog2");
 
@@ -34,3 +33,40 @@ var toggle = function(val) {
 
 tog1.addEventListener("click", function(e) {toggle(0);});
 tog2.addEventListener("click", function(e) {toggle(1);});
+
+
+var items = document.getElementById("items");
+var item = document.getElementById("item");
+var add_item = document.getElementById("add_item");
+
+var add = function(e) {
+    var new_item = item;
+    items.appendChild(new_item);
+}
+
+add_item.addEventListener("click", add);
+
+
+
+var color_select = document.getElementById("color");
+var blueopt = document.getElementById("blueopt");
+var redopt = document.getElementById("redopt");
+var orgopt = document.getElementById("orgopt");
+var greopt = document.getElementById("greopt");
+var purpopt = document.getElementById("purpopt");
+var yelopt = document.getElementById("yelopt");
+var colors = [blueopt, redopt, orgopt, yelopt, greopt, purpopt];
+
+var ch_color = function(val) {
+    console.log(color_select.style.backgroundColor);
+    color_select.style.backgroundColor = colors[val].style.backgroundColor;
+    console.log(color_select.style.backgroundColor);
+};
+
+for (i = 0; i< colors.length; i++) {
+    colors[i].addEventListener("mouseover",
+			       function(e) {
+				   ch_color(i);
+			       }
+			      );
+}

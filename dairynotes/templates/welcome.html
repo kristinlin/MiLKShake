@@ -19,9 +19,12 @@
 	<input type="text" id="typenote" class="form-control" name="content" placeholder="Type a note" >
       </div>
       <div id="checkbox_note" class="form-check" hidden >
-        <div class="form-inline" id="item">
-          <input class="form-check-input position-static" type="checkbox" id="blankCheckbox" value="option1" aria-label="..."><input type="text" class="form-control checkbox sharp" name="cb" placeholder="Item" >
-        </div>
+	<div id="items">
+          <div class="form-inline" id="item">
+            <input class="form-check-input position-static" type="checkbox" value="option1" aria-label="..."><input type="text" class="form-control checkbox sharp" name="cb" placeholder="Item" >
+          </div>
+	</div>
+	<button id="add_item" class="btn sharp" type="button">add item</button>
       </div>
 
       <h2> Note Color </h2>
@@ -32,7 +35,14 @@
       <input type="radio" name="radio" value="green">Green<br>
       <input type="radio" name="radio" value="purple">Purple<br>
       <div class="input-group">
-	
+	<select id="color" class="custom-select" id="inlineFormCustomSelect">
+          <option id="blueopt" value="Blue">Blue</option>
+          <option id="redopt" value="Red">Red</option>
+          <option id="orgopt" value="Orange">Orange</option>
+	  <option id="yelopt" value="Yellow">Yellow</option>
+	  <option id="greopt" value="Green">Green</option>
+	  <option id="purpopt" value="Purple">Purple</option>
+	</select>
 	<button id="tog1" class="btn btn-secondary sharp" type="button">checkbox</button>
 	<button id="tog2" class="btn btn-secondary sharp" type="button">Image Upload</button>
 	<button class="btn btn-primary sharp" type = "submit"> Submit </button>
