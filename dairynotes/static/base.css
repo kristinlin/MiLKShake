@@ -15,8 +15,18 @@
 
 .flashed {
     color: red;
-    font-weight:bold;
-    background-color: rgba(0, 0, 0, 0.5);
     font-style:italics;
 }
 
+.sharp {
+    border-radius: 0px;
+}
+
+#typenote{
+    border-top:none;
+    border-radius: 0px;
+}
+
+.checkbox {
+    width:100%
+}
