@@ -88,10 +88,10 @@ def logout():
 @app.route("/note", methods = ['POST'])
 def newNote():
     title = request.form['title']
-    content = request.form['content']
-    color = request.form['radio']
     print title
+    content = request.form['content']
     print content
+    color = request.form['color']
     print color
     user = session['username']
     note_type = "notlist"
