@@ -109,7 +109,7 @@ var setColor = function(){
 }
 
 var swapYellow = function(){
-    d3.select(this).style("fill", "blue");
+    d3.select(this).style("fill", "yellow");
 }
 
 getNotes();
@@ -117,4 +117,4 @@ initNotes();
 
 setColor();
 
-//d3.selectAll("rect").on("mouseover", swapYellow);
+d3.selectAll("rect").on("click", swapYellow);
