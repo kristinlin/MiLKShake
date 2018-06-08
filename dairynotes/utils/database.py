@@ -331,6 +331,24 @@ def unpin(note_id):
     db.commit()
     db.close()
 
+#changes note that is not a list to a list
+def change_to_list(note_id):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    command = 'SELECT content FROM notlist WHERE note_id=' + str(note_id) + ';'
+    info = c.execute(command)
+
+    for i in info:
+        content = i[0]
+
+    c.execute('INSERT INTO list VALUES (?,?,?,?)', [note_id, content, 0, False])
+    c.execute('DELETE FROM notlist WHERE note_id=' + str(note_id) + ';')
+    
+    db.commit()
+    db.close()
 
 
 if __name__ == '__main__':
