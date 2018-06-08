@@ -14,7 +14,6 @@ import os
     db.close()'''
 
 #functions to write:
-#edit note content
 #edit title
 #delete note
 #change color
@@ -22,10 +21,6 @@ import os
 #change to notlist
 #check boxes
 #uncheck boxes
-#pin
-#unpin
-#archive
-#unarchive
 #create new label
 #add label to note
 #remove label
@@ -256,6 +251,7 @@ def get_nonarch_notes(username):
 def get_arch_notes(username):
     return get_notes_temp(username, 1)
 
+#edits the content of the note - does not allow change to list or to notlist, or image upload (thats in a seperate function)
 def edit_note_content(note_id, new_content, checks=None):
     f=os.path.dirname(__file__) or '.'
     f+="/../data/app.db"
@@ -287,6 +283,55 @@ def edit_note_content(note_id, new_content, checks=None):
     db.commit()
     db.close()
 
+#archives note with given note_id
+def archive(note_id):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    c.execute('UPDATE notes SET archived=1 WHERE note_id=' + str(note_id) + ';')
+    
+    db.commit()
+    db.close()
+
+#makes an archived note a normal note
+def unarchive(note_id):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    c.execute('UPDATE notes SET archived=0 WHERE note_id=' + str(note_id) + ';')
+    
+    db.commit()
+    db.close()
+
+#pins note with given note_id
+def pin(note_id):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    c.execute('UPDATE notes SET pinned=1 WHERE note_id=' + str(note_id) + ';')
+    
+    db.commit()
+    db.close()
+
+#unpins the note with give note_id
+def unpin(note_id):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    c.execute('UPDATE notes SET pinned=0 WHERE note_id=' + str(note_id) + ';')
+    
+    db.commit()
+    db.close()
+
+
 
 if __name__ == '__main__':
     #table_creation()
@@ -306,6 +351,14 @@ if __name__ == '__main__':
 
     edit_note_content(0, 'hello')
     edit_note_content(1, ['uno', 'dos', 'tres'])
+    archive(0)
+    unpin(1)
 
+    print (get_nonarch_notes('testa'))
+    print (get_arch_notes('testa'))
+
+    unarchive(0)
+    pin(1)
+    
     print (get_nonarch_notes('testa'))
     print (get_arch_notes('testa'))

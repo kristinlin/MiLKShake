@@ -55,3 +55,6 @@ Worked on archive page and fixed sidebar links
 
 linK -- 2018-06-05 12:21
 Worked on toggling to diff note types and toggling note colors
+
+mashaZ -- 2018-06-08 13:47
+Wrote database functions for archiving and pinning notes
