@@ -10,10 +10,14 @@ app.secret_key = "idk"
 
 @app.route('/', methods=['POST', 'GET'])
 def root():
+    if 'username' in session:
+        return redirect(url_for('welcome'))
     return render_template('base.html',title='Welcome!')
 
 @app.route('/login')
 def login():
+    if 'username' in session:
+        return redirect(url_for('welcome'))
     return render_template('login.html',title='Login')
 
 @app.route('/signup', methods = ['POST','GET'])
@@ -88,11 +92,11 @@ def logout():
 @app.route("/note", methods = ['POST'])
 def newNote():
     title = request.form['title']
-    print title
+    #print title
     content = request.form['content']
-    print content
+    #print content
     color = request.form['color']
-    print color
+    #print color
     user = session['username']
     note_type = "notlist"
     pinned = True
@@ -103,7 +107,6 @@ def newNote():
 @app.route("/archive",methods = ['GET','POST'])
 def archive():
     if 'username' in session:
-        #change to archive notes function later
         notes = database.get_arch_notes(session['username'])
         d = {}
         for i in range(0,len(notes)):
