@@ -62,7 +62,7 @@ var displayNotes = function(){
 	.attr("class", "note");
 }
 
-//display the archive buttons
+//display the unarchive buttons
 var displayButtons = function(){
     console.log(noteTexts);
     console.log(noteIDs);
@@ -85,6 +85,22 @@ var displayButtons = function(){
 	.attr("fill", "black")
 	.attr("class", "but");*/
 }
+/*
+//display the unarchive buttons
+var displayButtons = function(){
+    console.log(noteTexts);
+    console.log(noteIDs);
+    var buts = svg.selectAll("ellipse").data(noteIDs).enter();
+    buts.append("ellipse")
+	.attr("cx", function(b, d){return xcors[d%5] + 120})
+	.attr("cy", function(){return ycors[ycors.length-1] + 180})
+	.attr("rx", 20)
+	.attr("ry", 10)
+	.attr("fill", "pink")
+	.attr("id", function(b){return b})
+	.attr("class", "but");
+}
+*/
 
 //take array of texts and display on screen
 var displayTexts = function(){
@@ -114,8 +130,8 @@ var newNote = function(text,id){
 var addNote = function(){
     newNote(curNoteText,curNoteID);
     displayNotes();
-    displayButtons();
     displayTexts();
+    displayButtons();
 }
 
 var changeNoteColor = function(d, i){
@@ -142,15 +158,11 @@ var setColor = function(){
     d3.selectAll('rect').style('fill', function(b, d){return notes[d]["color"]});
 }
 
-var swapYellow = function(){
-    d3.select(this).style("fill", "yellow");
-}
-
-var archive = function(){
+var unarchive = function(){
     console.log(this);
     var id = this.getAttribute("id");
     console.log(id);
-    $.post("/archiveNote", {
+    $.post("/unarchiveNote", {
 	javascript_data: id 
     }).done(function() {
         window.location.replace(window.location.href);});
@@ -161,4 +173,4 @@ initNotes();
 
 setColor();
 
-d3.selectAll("ellipse").on("click", archive);
+d3.selectAll("ellipse").on("click", unarchive);

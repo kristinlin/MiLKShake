@@ -78,6 +78,31 @@ def welcome():
             flash('Incorrect Password')
             return redirect(url_for('login'))
 
+@app.route('/refresh',methods = ['GET','POST'])
+def refresh():
+    redirect(url_for('welcome'))
+        
+@app.route('/archiveNote', methods = ['GET','POST'])
+def archiveNote():
+    jsdata = request.form['javascript_data']
+    id = int(jsdata)
+    print id
+    database.archive(id)
+    notes = database.get_nonarch_notes(session['username'])
+    print notes
+    return redirect(url_for('welcome'))
+
+@app.route('/unarchiveNote', methods = ['GET','POST'])
+def unarchiveNote():
+    jsdata = request.form['javascript_data']
+    id = int(jsdata)
+    print id
+    database.unarchive(id)
+    notes = database.get_arch_notes(session['username'])
+    print notes
+    return redirect(url_for('welcome'))
+
+        
 @app.route('/logout/',methods = ['POST','GET'])
 def logout():
     if 'username' in session:
