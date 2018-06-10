@@ -27,7 +27,7 @@ var getNotes = function(){
     noteContent = noteContent.replace(/None/g,'"None"');
     noteContent = noteContent.replace(/True/g,'"True"');
     noteContent = noteContent.replace(/False/g,'"False"');
-    //console.log(noteContent);
+    console.log(noteContent);
     notes = JSON.parse(noteContent);
     //console.log(notes);
     for (note in notes){

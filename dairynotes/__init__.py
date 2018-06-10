@@ -123,16 +123,29 @@ def logout():
 @app.route("/note", methods = ['POST'])
 def newNote():
     title = request.form['title']
-    #print title
+    print title
+    #print request.form.items()
+    #print request.form.getlist('content')
     content = request.form['content']
-    #print content
+    print content
+    checklist = request.form.getlist('cb')
+    print checklist
+    checked = request.form.get('check')
+    print checked
+    print request.form.items()
     color = request.form['color']
-    #print color
+    print color
     user = session['username']
-    note_type = "notlist"
+    if content == '':
+        note_type = "list"
+    else:
+        note_type = "notlist"
     pinned = True
     archived = False
-    database.add_note(user,title,note_type,color,pinned,archived,content)
+    #if note_type == "notlist":
+    #    database.add_note(user,title,note_type,color,pinned,archived,content)
+    #else:
+    #    database.add_note(user,title,note_type,color,pinned,archived,checklist)
     return redirect(url_for('welcome'))
 
 @app.route("/archive",methods = ['GET','POST'])
