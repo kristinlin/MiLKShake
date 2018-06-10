@@ -47,7 +47,12 @@ var add = function(e) {
 add_item.addEventListener("click", add);
 
 
-var color_opt = ["#274060", "#CC4933", "#F86624", "#E89005", "#5A9367", "#824C71"];
+var color_opt = {"Blue": "#274060",
+		 "Red": "#CC4933",
+		 "Orange": "#F86624",
+		 "Yellow": "#E89005",
+		 "Green" : "#5A9367",
+		 "Purple" : "#824C71"};
 var color_select = document.getElementById("color");
 var blueopt = document.getElementById("blueopt");
 var redopt = document.getElementById("redopt");
@@ -58,35 +63,10 @@ var yelopt = document.getElementById("yelopt");
 var colors = [blueopt, redopt, orgopt, yelopt, greopt, purpopt];
 
 
-var ch_color = function(val) {
+var ch_color = function(thing) {
     console.log(color_select);
+    console.log(thing.value);
     console.log(color_select.style.backgroundColor);
-    color_select.style.backgroundColor = color_opt[val];
+    color_select.style.backgroundColor = color_opt[str(thing.value)];
     console.log(color_select.style.backgroundColor);
 };
-
-colors[0].addEventListener("click",
-			   function(e) {
-			       console.log(0);
-			       ch_color(0);
-			   });
-colors[1].addEventListener("click",
-			   function(e) {
-			       ch_color(1);
-			   });
-colors[2].addEventListener("click",
-			   function(e) {
-			       ch_color(2);
-			   });
-colors[3].addEventListener("click",
-			   function(e) {
-			       ch_color(3);
-			   });
-colors[4].addEventListener("click",
-			   function(e) {
-			       ch_color(4);
-			   });
-colors[5].addEventListener("click",
-			   function(e) {
-			       ch_color(5);
-			   });
