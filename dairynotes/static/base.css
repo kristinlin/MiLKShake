@@ -15,10 +15,19 @@
 
 .flashed {
     color: red;
-    font-style:italics;
+    font-style:italic;
+}
+
+.checkbox {
+    width:500px;
 }
 
 .sharp {
+    border-radius: 0px;
+}
+
+.form-sharp {
+    border-top:none;
     border-radius: 0px;
 }
 

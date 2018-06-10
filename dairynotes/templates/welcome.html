@@ -21,10 +21,19 @@
       <div id="checkbox_note" class="form-check" hidden >
 	<div id="items">
           <div class="form-inline" id="item">
-            <input class="form-check-input position-static" type="checkbox" value="option1" aria-label="..."><input type="text" class="form-control checkbox sharp" name="cb" placeholder="Item" >
+            <input class="form-check-input position-static" type="checkbox" value="option1" aria-label="..."><input id="new_item" type="text" class="form-control" name="cb" placeholder="Item" style="border-radius: 0px; border-top:none; border-radius:0px; width: 500px">
           </div>
 	</div>
-	<button id="add_item" class="btn sharp" type="button">add</button>
+	<div class="form-inline" id="add_item">
+          <input class="form-check-input position-static" type="checkbox" value="option1" aria-label="..." disabled><input type="text" class="form-control" name="cb" placeholder="Item" style="border-radius: 0px; border-top:none; border-radius:0px; width: 500px" disabled>
+        </div>
+      </div>
+      <div id="image_note" hidden>
+	<input class="form-control form-sharp" type="url" placeholder="Enter an image url">
+	<div class="custom-file">
+	  <input type="file" class="custom-file-input form-sharp" id="customFile" accept="image/*">
+	  <label class="custom-file-label form-sharp" for="customFile">Choose file</label>
+	</div>
       </div>
       <div class="input-group">
 	<select onchange="ch_color(this)" id="color" name="color" class="custom-select" id="inlineFormCustomSelect" style="background-color: #274060">
