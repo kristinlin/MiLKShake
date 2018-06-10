@@ -64,9 +64,5 @@ var colors = [blueopt, redopt, orgopt, yelopt, greopt, purpopt];
 
 
 var ch_color = function(thing) {
-    console.log(color_select);
-    console.log(thing.value);
-    console.log(color_select.style.backgroundColor);
-    color_select.style.backgroundColor = color_opt[str(thing.value)];
-    console.log(color_select.style.backgroundColor);
+    color_select.style.backgroundColor = color_opt[String(thing.value)];
 };
