@@ -64,17 +64,23 @@ var displayNotes = function(){
 
 //display the unarchive buttons
 var displayButtons = function(){
-    console.log(noteTexts);
-    console.log(noteIDs);
-    var buts = svg.selectAll("ellipse").data(noteIDs).enter();
-    buts.append("ellipse")
+    var arcBut = svg.selectAll("ellipse").data(noteIDs).enter();
+    arcBut.append("ellipse")
 	.attr("cx", function(b, d){return xcors[d%5] + 100})
 	.attr("cy", function(){return ycors[ycors.length-1] + 180})
-	.attr("rx", 40)
+	.attr("rx", 10)
 	.attr("ry", 10)
 	.attr("fill", "pink")
 	.attr("id", function(b){return b})
-	.attr("class", "but");
+	.attr("class", "arch");
+    var delBut = svg.selectAll("circle").data(noteIDs).enter();
+    delBut.append("circle")
+	.attr("cx", function(b, d){return xcors[d%5] + 50})
+	.attr("cy", function(){return ycors[ycors.length-1] + 180})
+	.attr("r", 10)
+	.attr("fill", "gray")
+	.attr("id", function(b){return b})
+	.attr("class", "arch");
     //having the word archive makes the button unclickable
     /*var texts = svg.selectAll("text").data(noteIDs).enter();
     texts.append("text")
@@ -158,6 +164,8 @@ var setColor = function(){
     d3.selectAll('rect').style('fill', function(b, d){return notes[d]["color"]});
 }
 
+//unarchive a note
+// send the note id to flask app
 var unarchive = function(){
     console.log(this);
     var id = this.getAttribute("id");
@@ -168,9 +176,21 @@ var unarchive = function(){
         window.location.replace(window.location.href);});
 }
 
+
+//delete a note
+// send the note id to flask app
+var del = function(){
+    console.log("delete");
+    var id = this.getAttribute("id");
+    console.log(id);
+    $.post("/deleteNote", {
+	javascript_data: id 
+    }).done(function() {
+        window.location.replace(window.location.href);});
+}
+
 getNotes();
 initNotes();
-
 setColor();
-
 d3.selectAll("ellipse").on("click", unarchive);
+d3.selectAll("circle").on("click",del);

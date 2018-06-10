@@ -77,10 +77,6 @@ def welcome():
         else:
             flash('Incorrect Password')
             return redirect(url_for('login'))
-
-@app.route('/refresh',methods = ['GET','POST'])
-def refresh():
-    redirect(url_for('welcome'))
         
 @app.route('/archiveNote', methods = ['GET','POST'])
 def archiveNote():
@@ -102,6 +98,16 @@ def unarchiveNote():
     print notes
     return redirect(url_for('welcome'))
 
+@app.route('/deleteNote', methods = ['GET','POST'])
+def deleteNote():
+    jsdata = request.form['javascript_data']
+    id = int(jsdata)
+    print id
+    #change to database delete function later
+    #database.delete(id)
+    notes = database.get_nonarch_notes(session['username'])
+    print notes
+    return redirect(url_for('welcome'))
         
 @app.route('/logout/',methods = ['POST','GET'])
 def logout():
