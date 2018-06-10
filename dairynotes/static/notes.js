@@ -79,15 +79,20 @@ var displayButtons = function(){
 }
 
 //take array of texts and display on screen
-var displayTexts = function(){
-    console.log(noteTitles);
+var displayTitles = function(){
     var texts = svg.selectAll("text").data(noteTitles).enter();
     texts.append("text")
-	.attr("x", function(b, d){return xcors[d] + 5})
+	.attr("x", function(b, d){return xcors[d%5] + 5})
 	.attr("y", function(){return  ycors[ycors.length-1] + 15})
-	.text(function(b) {return b})
+	.text(function(b, d) {return b})
 	.attr("fill", "black")
-    	.attr("class", "title")
+    	.attr("class", "titl")
+	.attr("font-weight", "bold")
+	.append('tspan')
+	.attr('x', function(b, d){return xcors[d%5] + 5})
+	.attr('dy', 35)
+	.text(function(b, d) {return noteTexts[d]})
+	.attr("font-weight", "normal");
 }
 
 //add a new note
@@ -110,7 +115,7 @@ var addNote = function(){
     newNote(curNoteText,curNoteTitle,curNoteID);
     displayNotes();
     displayButtons();
-    displayTexts();
+    displayTitles();
 }
 
 var changeNoteColor = function(d, i){
@@ -154,5 +159,4 @@ var archive = function(){
 getNotes();
 initNotes();
 setColor();
-displayTexts();
 d3.selectAll("ellipse").on("click", archive);
