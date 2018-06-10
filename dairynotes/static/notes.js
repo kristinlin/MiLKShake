@@ -4,6 +4,7 @@ var curContent = [];
 var curTitles = [];
 var curIDs = [];
 var noteTexts = [];
+var noteTitles = [];
 var noteIDs = [];
 var xcors = [];
 var ycors = [0];
@@ -79,17 +80,20 @@ var displayButtons = function(){
 
 //take array of texts and display on screen
 var displayTexts = function(){
-    var texts = svg.selectAll("title").data(curTitles).enter();
+    console.log(noteTitles);
+    var texts = svg.selectAll("text").data(noteTitles).enter();
     texts.append("text")
-	.attr("x", function(b, d){return xcors[d%5] + 1})
-	.attr("y", function(){return ycors[ycors.length-1] + 15})
+	.attr("x", function(b, d){return xcors[d] + 5})
+	.attr("y", function(){return  ycors[ycors.length-1] + 15})
 	.text(function(b) {return b})
 	.attr("fill", "black")
-	.attr("class", "title")}
+    	.attr("class", "title")
+}
 
 //add a new note
-var newNote = function(text,id){
+var newNote = function(text,title, id){
     noteTexts.push(text);
+    noteTitles.push(title);
     noteIDs.push(id);
     if(xcors.length < 5){
 	xcors.push(noteGapHoriz*xcors.length);
@@ -103,7 +107,7 @@ var newNote = function(text,id){
 }
 
 var addNote = function(){
-    newNote(curNoteText,curNoteID);
+    newNote(curNoteText,curNoteTitle,curNoteID);
     displayNotes();
     displayButtons();
     displayTexts();
@@ -123,10 +127,10 @@ var changeCurNoteText = function(newText){
 var initNotes = function(){
     for (text in curContent){
 	curNoteText = curContent[text];
+	curNoteTitle = curTitles[text];
 	curNoteID = curIDs[text];
 	addNote();
     }
-    //getNotes();
 }
 
 var setColor = function(){
@@ -150,5 +154,5 @@ var archive = function(){
 getNotes();
 initNotes();
 setColor();
-
+displayTexts();
 d3.selectAll("ellipse").on("click", archive);
