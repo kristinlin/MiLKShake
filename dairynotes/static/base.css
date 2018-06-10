@@ -13,6 +13,22 @@
     font-weight: bold
 }
 
+.front {
+    padding: 25px;
+    margin: 15px;
+    color: white;
+}
+
+#front_line {
+    font-size: 80px;
+}
+
+#front_page {
+    background-image: url('postits.jpeg');
+    height:85%;
+    width: 100%;
+}
+
 .flashed {
     color: red;
     font-style:italic;
@@ -31,10 +47,6 @@
     border-radius: 0px;
 }
 
-#typenote{
-    border-top:none;
-    border-radius: 0px;
-}
 
 #color {
     color:white;

@@ -17,7 +17,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <br>
-      <a class="navbar-brand" href="/" style="font-family:'Bungee', cursive; font-size:20px">TEAM MILKSHAKE NOTES</a>
+      <a class="navbar-brand" href="/" style="font-family:'Bungee', cursive; font-size:20px">DAIRYNOTES</a>
       <form class="form-inline">
 	<input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
 	<button class="btn btn-outline-primary success my-2 my-sm-0" type="submit">Search</button>
@@ -49,9 +49,15 @@
 	  {% endfor %}
 	</div>
 	{% block content1 %}
-	<h2>Welcome to Google Keep by Team MiLKShake!</h2>
-
-	<h3><a href="/login">Login</a></h3>
+	<div id="front_page">
+	  <div class="row front">
+	    <h1 class="heading" id="front_line" >Keep all the notes, checklists, and images you want right here.</h1>
+	  </div>
+	  <br><br>
+	  <div class="text-center">
+	    <button class="btn"><a href="/login">LOGIN OR SIGN UP</a></button>
+	  </div>
+	</div>
 	{% endblock %}
       </div>
     </div>

@@ -1,3 +1,8 @@
+
+
+//TOGGLING THE DIFF NOTE OPTIONS
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 var NOTE = 0;
 var CHECKBOX = 1;
 var IMAGE = 2;
@@ -35,6 +40,11 @@ tog1.addEventListener("click", function(e) {toggle(0);});
 tog2.addEventListener("click", function(e) {toggle(1);});
 
 
+
+
+//ADDING MORE CHECKBOX ITEMS
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 var items = document.getElementById("items");
 var item = document.getElementById("item");
 var add_item = document.getElementById("add_item");
@@ -43,6 +53,8 @@ var add = function() {
     var new_item = item.cloneNode(true);
     items.appendChild(new_item);
     new_item.children[0].checked = false;
+    new_item.children[0].value = "unchecked";
+    new_item.children[0].addEventListener("click", chval);
     new_item.children[1].value = "";
     new_item.children[1].addEventListener("keydown",
 			      function(e) {
@@ -51,6 +63,14 @@ var add = function() {
 				      add();
 				  }
 			      });
+};
+
+var chval = function(e) {
+    if (e.target.checked) {
+	e.target.value = "checked";
+    } else {
+	e.target.value = "unchecked";
+    }
 }
 
 add_item.addEventListener("click", add);
@@ -61,7 +81,18 @@ item.children[1].addEventListener("keydown",
 			      add();
 			  }
 		      });
+if (item.children[0].checked) {
+    item.children[0].value = "checked";
+} else {
+    item.children[0].value = "unchecked";
+}
+item.children[0].addEventListener("click", chval);
+				  
 
+
+
+//SELECTING NOTE COLOR
+//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 var color_opt = {"Blue": "#274060",
 		 "Red": "#CC4933",
