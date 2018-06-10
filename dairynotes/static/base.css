@@ -26,6 +26,11 @@
     border-radius: 0px;
 }
 
+.form-sharp {
+    border-top:none;
+    border-radius: 0px;
+}
+
 #typenote{
     border-top:none;
     border-radius: 0px;

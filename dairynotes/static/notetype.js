@@ -7,7 +7,7 @@ var tog2 = document.getElementById("tog2");
 
 var reg = document.getElementById("typenote");
 var checkbox = document.getElementById("checkbox_note");
-var image = null;
+var image = document.getElementById("image_note");
 
 var opt_name = ["Checklist", "Image", "Note"];
 var opt_val = [checkbox, image, reg];
