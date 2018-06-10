@@ -15,7 +15,11 @@
 
 .flashed {
     color: red;
-    font-style:italics;
+    font-style:italic;
+}
+
+.checkbox {
+    width:500px;
 }
 
 .sharp {

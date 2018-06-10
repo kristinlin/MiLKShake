@@ -39,12 +39,28 @@ var items = document.getElementById("items");
 var item = document.getElementById("item");
 var add_item = document.getElementById("add_item");
 
-var add = function(e) {
-    var new_item = item;
+var add = function() {
+    var new_item = item.cloneNode(true);
     items.appendChild(new_item);
+    new_item.children[0].checked = false;
+    new_item.children[1].value = "";
+    new_item.children[1].addEventListener("keydown",
+			      function(e) {
+				  var code = e.keyCode;
+				  if (code == '9') {
+				      add();
+				  }
+			      });
 }
 
 add_item.addEventListener("click", add);
+item.children[1].addEventListener("keydown",
+		      function(e) {
+			  var code = e.keyCode || e.which;
+			  if (code == '9') {
+			      add();
+			  }
+		      });
 
 
 var color_opt = {"Blue": "#274060",
