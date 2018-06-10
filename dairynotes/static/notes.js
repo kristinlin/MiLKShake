@@ -1,6 +1,6 @@
 var addNoteButton = document.getElementById("addNote");
 var svg = d3.select("svg");
-var curTexts = [];
+var curContent = [];
 var curTitles = [];
 var curIDs = [];
 var noteTexts = [];
@@ -14,11 +14,6 @@ var noteGapHoriz = 200;
 var noteGapVert = 250;
 var curNoteText = "nice";
 var curNoteID = -1;
-var notes = d3.select("svg").selectAll("rect").data(noteTexts).enter();
-var buts = d3.select("svg").selectAll("ellipse").data(curIDs).enter();
-var texts = d3.select("svg").selectAll("text").data(noteTexts).enter();
-var svgContainer = d3.select("svg")
-
 var allNotes = svg.append("notes")
 
 //create array of notes from html
@@ -35,13 +30,11 @@ var getNotes = function(){
     notes = JSON.parse(noteContent);
     //console.log(notes);
     for (note in notes){
-	//console.log(notes[note]);
-	//console.log(notes[note]['content']);
 	noteContent = notes[note]['content'];
-	noteTitle = notes[note]['title'];
+	noteTitle = notes[note]['note_title'];
 	noteID = notes[note]['note_id'];
 	//console.log(noteID);
-	curTexts.push(noteContent);
+	curContent.push(noteContent);
 	curTitles.push(noteTitle);
 	curIDs.push(noteID);
 	//console.log(curIDs);
@@ -64,8 +57,6 @@ var displayNotes = function(){
 
 //display the archive buttons
 var displayButtons = function(){
-    console.log(noteTexts);
-    console.log(noteIDs);
     var buts = svg.selectAll("ellipse").data(noteIDs).enter();
     buts.append("ellipse")
 	.attr("cx", function(b, d){return xcors[d%5] + 100})
@@ -88,13 +79,13 @@ var displayButtons = function(){
 
 //take array of texts and display on screen
 var displayTexts = function(){
-    var texts = svg.selectAll("text").data(noteTexts).enter();
+    var texts = svg.selectAll("title").data(curTitles).enter();
     texts.append("text")
 	.attr("x", function(b, d){return xcors[d%5] + 1})
 	.attr("y", function(){return ycors[ycors.length-1] + 15})
 	.text(function(b) {return b})
 	.attr("fill", "black")
-	.attr("class", "body")}
+	.attr("class", "title")}
 
 //add a new note
 var newNote = function(text,id){
@@ -107,7 +98,7 @@ var newNote = function(text,id){
 	xcors = [0]
 	ycors.push(noteGapVert*ycors.length);
 	svgHeight += 500;
-	svgContainer.style("height", svgHeight); 
+	svg.style("height", svgHeight); 
     }
 }
 
@@ -128,14 +119,14 @@ var changeCurNoteText = function(newText){
     curNoteText = newText
 }
 
+//takes array of notes and initializes js notes
 var initNotes = function(){
-    for (text in curTexts){
-	console.log(text);
-	curNoteText = curTexts[text];
+    for (text in curContent){
+	curNoteText = curContent[text];
 	curNoteID = curIDs[text];
 	addNote();
     }
-    getNotes();
+    //getNotes();
 }
 
 var setColor = function(){
@@ -158,7 +149,6 @@ var archive = function(){
 
 getNotes();
 initNotes();
-
 setColor();
 
 d3.selectAll("ellipse").on("click", archive);
