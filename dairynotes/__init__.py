@@ -130,9 +130,15 @@ def newNote():
     print content
     checklist = request.form.getlist('cb')
     print checklist
-    checked = request.form.get('check')
+    check = request.form.getlist('check')
+    print check
+    checked = []
+    for i in range(0,len(checklist)):
+        if checklist[i] in check:
+            checked.append(True)
+        else:
+            checked.append(False)
     print checked
-    print request.form.items()
     color = request.form['color']
     print color
     user = session['username']
@@ -142,10 +148,10 @@ def newNote():
         note_type = "notlist"
     pinned = True
     archived = False
-    #if note_type == "notlist":
-    #    database.add_note(user,title,note_type,color,pinned,archived,content)
-    #else:
-    #    database.add_note(user,title,note_type,color,pinned,archived,checklist)
+    if note_type == "notlist":
+        database.add_note(user,title,note_type,color,pinned,archived,content)
+    else:
+        database.add_note(user,title,note_type,color,pinned,archived,checklist, checked_items=checked)
     return redirect(url_for('welcome'))
 
 @app.route("/archive",methods = ['GET','POST'])
