@@ -53,7 +53,6 @@ var add = function() {
     var new_item = item.cloneNode(true);
     items.appendChild(new_item);
     new_item.children[0].checked = false;
-    new_item.children[0].value = "unchecked";
     new_item.children[0].addEventListener("click", chval);
     new_item.children[1].value = "";
     new_item.children[1].addEventListener("keydown",
@@ -66,10 +65,9 @@ var add = function() {
 };
 
 var chval = function(e) {
+    console.log(e.target.nextElementSibling.value);
     if (e.target.checked) {
-	e.target.value = "checked";
-    } else {
-	e.target.value = "unchecked";
+	e.target.value = e.target.nextElementSibling.value;
     }
 }
 
@@ -82,9 +80,7 @@ item.children[1].addEventListener("keydown",
 			  }
 		      });
 if (item.children[0].checked) {
-    item.children[0].value = "checked";
-} else {
-    item.children[0].value = "unchecked";
+    item.children[0].value = item.children[1].value;
 }
 item.children[0].addEventListener("click", chval);
 				  
