@@ -3,9 +3,13 @@ var svg = d3.select("svg");
 var curContent = [];
 var curTitles = [];
 var curIDs = [];
+var curTypes = [];
+var curChecks = [];
 var noteTexts = [];
 var noteTitles = [];
 var noteIDs = [];
+var noteTypes = [];
+var noteChecks = [];
 var xcors = [];
 var ycors = [0];
 var svgHeight = 100;
@@ -15,6 +19,7 @@ var noteGapHoriz = 200;
 var noteGapVert = 250;
 var curNoteText = "nice";
 var curNoteID = -1;
+var curCheck = 0;
 var allNotes = svg.append("notes")
 
 //create array of notes from html
@@ -34,13 +39,30 @@ var getNotes = function(){
     //console.log(notes);
     for (note in notes){
 	noteContent = notes[note]['content'];
+	console.log(noteContent);
 	noteTitle = notes[note]['note_title'];
 	noteID = notes[note]['note_id'];
+	noteType = notes[note]['note_type'];
+	//if its a list, make a check X list
+	if (noteType == "list"){
+	    checks = notes[note]['checked'];
+	    checkmarks = [];
+	    for (c in checks){
+		if(checks[c] == "True")
+		    checkmarks.push('✓');
+		else
+		    checkmarks.push('X');
+	    }
+	    curChecks.push(checkmarks);
+	}
+	else
+	    curChecks.push(0);
 	//console.log(noteID);
 	curContent.push(noteContent);
 	curTitles.push(noteTitle);
 	curIDs.push(noteID);
-	//console.log(curIDs);
+	curTypes.push(noteType);
+	console.log(curContent);
     }
 }
 
@@ -102,14 +124,21 @@ var displayTitles = function(){
 	.attr('x', function(b, d){return xcors[d%5] + 5})
 	.attr('dy', 35)
 	.text(function(b, d) {return noteTexts[d]})
+	.attr("font-weight", "normal")
+	.append('tspan')
+	.attr('x', function(b, d){return xcors[d%5] + 5})
+	.attr('dy', 40)
+	.text(function(b, d) {if (noteChecks[d] == 0){return ''}
+			      else return noteChecks[d]})
 	.attr("font-weight", "normal");
 }
 
 //add a new note
-var newNote = function(text,title, id){
+var newNote = function(text,title,id,checkbox){
     noteTexts.push(text);
     noteTitles.push(title);
     noteIDs.push(id);
+    noteChecks.push(checkbox);
     if(xcors.length < 5){
 	xcors.push(noteGapHoriz*xcors.length);
     }
@@ -122,7 +151,7 @@ var newNote = function(text,title, id){
 }
 
 var addNote = function(){
-    newNote(curNoteText,curNoteTitle,curNoteID);
+    newNote(curNoteText,curNoteTitle,curNoteID,curCheck);
     displayNotes();
     displayButtons();
     displayTitles();
@@ -144,6 +173,7 @@ var initNotes = function(){
 	curNoteText = curContent[text];
 	curNoteTitle = curTitles[text];
 	curNoteID = curIDs[text];
+	curCheck = curChecks[text]; 
 	addNote();
     }
 }

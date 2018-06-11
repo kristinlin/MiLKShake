@@ -61,3 +61,6 @@ Wrote database functions for archiving and pinning notes
 
 sonalP -- 2018-06-09 00:31
 Archive and unarchive note buttons with automatic page refresh
+
+sonalP -- 2018-06-10 23:29
+Note checkboxes

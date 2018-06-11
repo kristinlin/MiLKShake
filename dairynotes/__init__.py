@@ -129,7 +129,9 @@ def newNote():
     content = request.form['content']
     print repr(content)
     checklist = request.form.getlist('cb')
-    print checklist
+    #print "checklist"
+    print repr(checklist)
+    #print checklist == ['']
     check = request.form.getlist('check')
     print check
     checked = []
@@ -142,7 +144,9 @@ def newNote():
     color = request.form['color']
     print color
     user = session['username']
-    if content == '':
+    if content == '' and checklist == ['']:
+        note_type = "notlist"
+    elif content == '':
         note_type = "list"
     else:
         note_type = "notlist"
