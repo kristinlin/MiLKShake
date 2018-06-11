@@ -61,3 +61,7 @@ Wrote database functions for archiving and pinning notes
 
 sonalP -- 2018-06-09 00:31
 Archive and unarchive note buttons with automatic page refresh
+
+olevskyL -- 2018-06-10 8:31
+Debugged text
+Title and body now show correctly
