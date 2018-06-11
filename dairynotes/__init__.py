@@ -127,7 +127,7 @@ def newNote():
     #print request.form.items()
     #print request.form.getlist('content')
     content = request.form['content']
-    print content
+    print repr(content)
     checklist = request.form.getlist('cb')
     print checklist
     check = request.form.getlist('check')

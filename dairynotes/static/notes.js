@@ -20,8 +20,10 @@ var allNotes = svg.append("notes")
 //create array of notes from html
 var getNotes = function(){
     noteContent = document.getElementById("notes").innerHTML;
-    noteContent = noteContent.replace('[','');
-    noteContent = noteContent.replace(']','');
+    //noteContent = noteContent.replace('[','');
+    //noteContent = noteContent.replace(']','');
+    //noteContent = noteContent.replace('(','[');
+    //noteContent = noteContent.replace('),',']');
     noteContent = noteContent.replace(/u'/g,'"');
     noteContent = noteContent.replace(/'/g,'"');
     noteContent = noteContent.replace(/None/g,'"None"');

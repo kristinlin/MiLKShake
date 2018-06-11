@@ -224,12 +224,21 @@ def get_notes_temp(username, archived):
         note_id = d['note_id']
         if d['note_type'] == 'list':
             content = []
+            order = []
+            checked = []
             
             com = 'SELECT item, item_num, checked FROM list WHERE note_id=' + str(note_id) + ';'
             i = c.execute(com)
 
             for item_info in i:
-                content.append((item_info[0], item_info[1], (item_info[2] == 1)))
+                content.append(item_info[0])
+                order.append(item_info[1])
+                checked.append((item_info[2] == 1))
+                #content.append((item_info[0], item_info[1], (item_info[2] == 1)))
+
+            d['content'] = content
+            d['order'] = order
+            d['checked'] = checked
 
         else:
             content = ''
@@ -237,9 +246,7 @@ def get_notes_temp(username, archived):
             i = c.execute(com)
             for stuff in i:
                 content = stuff[0]
-
-        #add content to dictionary
-        d['content'] = content
+            d['content'] = content
     
     return notes_list
 
