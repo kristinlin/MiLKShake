@@ -122,14 +122,14 @@ var displayTitles = function(){
 	.attr("font-weight", "bold")
 	.append('tspan')
 	.attr('x', function(b, d){return xcors[d%5] + 5})
-	.attr('dy', 35)
-	.text(function(b, d) {return noteTexts[d]})
-	.attr("font-weight", "normal")
-	.append('tspan')
-	.attr('x', function(b, d){return xcors[d%5] + 5})
-	.attr('dy', 40)
+	.attr('dy', 30)
 	.text(function(b, d) {if (noteChecks[d] == 0){return ''}
 			      else return noteChecks[d]})
+	.attr("font-weight", "normal")
+    	.append('tspan')
+	.attr('x', function(b, d){return xcors[d%5] + 5})
+	.attr('dy', 35)
+	.text(function(b, d) {return noteTexts[d]})
 	.attr("font-weight", "normal");
 }
 
