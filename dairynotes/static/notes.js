@@ -74,6 +74,7 @@ var displayNotes = function(){
 	.attr("height", noteHeight)
 	.attr("width", noteWidth)
 	.attr("fill", "yellow")
+	.attr("id", function(b, d){return d})
 	.attr("class", function(b, d){return "note" + d})
 }
 
@@ -229,10 +230,7 @@ d3.selectAll('rect')
 	    selection = this;
 	    d3.select(this).attr("style", "stroke:black;stroke-width:5");
 	}
-    }
-       )
-	
-	
+    })
 
 d3.select("#editText").on("input", function() {
     newText = this.value;
@@ -241,4 +239,11 @@ d3.select("#editText").on("input", function() {
 console.log(d3.select('#editConfirm'));
 d3.select("#editConfirm").on("click", function(){
     d3.select("." + selection.getAttribute("class") + "-text")
-	.text(newText)})
+	.text(newText)
+    var note_id = selection.getAttribute("id")
+
+    $.post("/welcome", {
+	js_id: note_id, js_content: newText
+    }).done(function() {
+        window.location.replace(window.location.href);});
+})

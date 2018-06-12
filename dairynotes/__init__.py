@@ -49,6 +49,12 @@ def welcome():
         for i in range(0,len(notes)):
             d[str(i)] = notes[i]
         #print d
+	if len(request.form) >  0:
+	   new_content = request.form['js_content']
+	   print request.form['js_content']
+	   print request.form['js_id']
+	   note_id = int(request.form['js_id'])
+	   database.edit_note_content(note_id, new_content)
         return render_template('welcome.html',username=session['username'],notes=d)
     else:
         try:
