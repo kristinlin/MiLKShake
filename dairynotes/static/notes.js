@@ -122,15 +122,15 @@ var displayTitles = function(){
 	.attr("font-weight", "bold")
 	.append('tspan')
 	.attr('x', function(b, d){return xcors[d%5] + 5})
-	.attr('dy', 30)
+	.attr('dy', 35)
+	.text(function(b, d){return noteTexts[d]})
+	.attr("font-weight", "normal")
+	.append('tspan')
+	.attr('x', function(b, d){return xcors[d%5] + 5})
+	.attr('dy', 40)
 	.text(function(b, d) {if (noteChecks[d] == 0){return ''}
 			      else return noteChecks[d]})
 	.attr("font-weight", "normal")
-    	.append('tspan')
-	.attr('x', function(b, d){return xcors[d%5] + 5})
-	.attr('dy', 35)
-	.text(function(b, d) {return noteTexts[d]})
-	.attr("font-weight", "normal");
 }
 
 //add a new note
@@ -179,7 +179,7 @@ var initNotes = function(){
 }
 
 var setColor = function(){
-    d3.selectAll('rect').style('fill', function(b, d){return notes[d]["color"]});
+    d3.selectAll('rect').attr('fill', function(b, d){return notes[d]["color"]});
 }
 
 var swapYellow = function(){
@@ -210,8 +210,28 @@ var del = function(){
         window.location.replace(window.location.href);});
 }
 
+
+var selection = "";
+
 getNotes();
 initNotes();
 setColor();
 d3.selectAll("ellipse").on("click", archive);
 d3.selectAll("circle").on("click",del);
+
+d3.selectAll('rect')
+    .on('click', function(d, i) {
+	if(this.getAttribute("style") == "stroke:black;stroke-width:5"){
+	    d3.select(this).attr("style", "");
+	    selection = ""
+	}
+	else{
+	    if(selection != ""){
+		d3.select(selection).attr("style", "");
+	    }
+	    selection = this;
+	    d3.select(this).attr("style", "stroke:black;stroke-width:5");
+	}
+	console.log(selection)
+    });
+console.log(selection != "");
