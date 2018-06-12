@@ -242,7 +242,7 @@ d3.select("#editConfirm").on("click", function(){
 	.text(newText)
     var note_id = selection.getAttribute("id")
 
-    $.post("/welcome", {
+    $.post("/editNote", {
 	js_id: note_id, js_content: newText
     }).done(function() {
         window.location.replace(window.location.href);});

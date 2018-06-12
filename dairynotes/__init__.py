@@ -49,12 +49,6 @@ def welcome():
         for i in range(0,len(notes)):
             d[str(i)] = notes[i]
         #print d
-	if len(request.form) >  0:
-	   new_content = request.form['js_content']
-	   print request.form['js_content']
-	   print request.form['js_id']
-	   note_id = int(request.form['js_id'])
-	   database.edit_note_content(note_id, new_content)
         return render_template('welcome.html',username=session['username'],notes=d)
     else:
         try:
@@ -83,7 +77,18 @@ def welcome():
         else:
             flash('Incorrect Password')
             return redirect(url_for('login'))
-        
+
+@app.route('/editNote', methods = ['GET','POST'])
+def editNote():
+    new_content = request.form['js_content']
+    print request.form['js_content']
+    print request.form['js_id']
+    note_id = int(request.form['js_id'])
+    database.edit_note_content(note_id, new_content)
+    notes = database.get_nonarch_notes(session['username'])
+    print notes
+    return redirect(url_for('welcome'))
+
 @app.route('/archiveNote', methods = ['GET','POST'])
 def archiveNote():
     jsdata = request.form['javascript_data']
