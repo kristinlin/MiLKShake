@@ -71,3 +71,6 @@ Note checklists
 
 leviO -- 2018-06-12 12:45
 notes can now be selected
+
+mashaZ -- 2018-06-12 14:17
+Wrote a bunch of database functions (delete note, change title, change color, change list to not list, check boxes, uncheck boxes, add image, delete image)

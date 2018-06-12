@@ -12,22 +12,37 @@ import os
     
     db.commit()
     db.close()'''
+#list of written functions:
+
+#add_user (username, password)
+#check_username (username) -- returns true if username already exists
+#check_login (username, password) -- returns true if login is valid
+
+#add_note(...) -- see function for details
+#get_nonarch_notes(username) -- gets all non-archived notes of a user, see get_notes_temp function for details of return values
+#get_arch_notes(username) -- gets all archived notes of a user, see get_note_temp funciton for details fo return values
+#edit_note_content(note_id, new_content, checks=None) -- new_conent is a list if note_type is a list, and string otherwise, and checks mark which boxes have been checked (you don't have to have that parameter)
+#archive(note_id) -- archives note
+#unarchive(note_id) -- removes note from archive
+#pin(note_id) -- pins note
+#unpin(note_id) -- unpins note
+#change_to_list(note_id) -- makes a nonlist note a list - gives it a check box
+#change_to_notlist(note_id) -- makes a list a nonlist
+#delete_note(note_id) -- completely deletes note - irreverisble
+#edit_title(note_id, new_title) -- changes title of note
+#change_color(note_id, new_color) -- changes color of note
+#check_boxes(note_id, item_nums) -- checks all list items given (item num is the same as the list index)
+#uncheck_boxes(note_id, item_nums) -- unchecks boxes (same as above)
+#add_image(note_id, image) -- note that there can only be one image at a time, so if you add an image when there already is one, it will replace the old one
+#del_image(note_id) -- deletes image of a note
+#
 
 #functions to write:
-#edit title
-#delete note
-#change color
-#change to list
-#change to notlist
-#check boxes
-#uncheck boxes
 #create new label
 #add label to note
 #remove label
 #add reminder
 #remove reminder
-#add image
-#remove image
 
 #==========================================================
 '''
@@ -246,6 +261,7 @@ def get_notes_temp(username, archived):
             i = c.execute(com)
             for stuff in i:
                 content = stuff[0]
+            print(content)
             d['content'] = content
     
     return notes_list
@@ -348,11 +364,126 @@ def change_to_list(note_id):
     command = 'SELECT content FROM notlist WHERE note_id=' + str(note_id) + ';'
     info = c.execute(command)
 
+    content = ''
     for i in info:
         content = i[0]
 
     c.execute('INSERT INTO list VALUES (?,?,?,?)', [note_id, content, 0, False])
     c.execute('DELETE FROM notlist WHERE note_id=' + str(note_id) + ';')
+    c.execute('UPDATE notes SET note_type="list" WHERE note_id=' + str(note_id) + ';')
+    
+    db.commit()
+    db.close()
+
+#changes list to not a list
+def change_to_notlist(note_id):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    command = 'SELECT item_num, item FROM list WHERE note_id=' + str(note_id) + ';'
+    info = c.execute(command)
+
+    d = {}
+    for i in info:
+        d[i[0]] = i[1]
+
+    content = ''
+    j = 0
+    while j < len(d):
+        content += d[j]
+        j += 1
+
+    c.execute('INSERT INTO notlist VALUES (?,?)', [note_id, content])
+    c.execute('DELETE FROM list WHERE note_id=' + str(note_id) + ';')
+    c.execute('UPDATE notes SET note_type="notlist" WHERE note_id=' + str(note_id) + ';')
+    
+    db.commit()
+    db.close()
+
+#deletes note from all tables - cannot be reversed
+def delete_note(note_id):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    c.execute('DELETE FROM list WHERE note_id=' + str(note_id) + ';')
+    c.execute('DELETE FROM notlist WHERE note_id=' + str(note_id) + ';')
+    c.execute('DELETE FROM notes WHERE note_id=' + str(note_id) + ';')
+    c.execute('DELETE FROM labels WHERE note_id=' + str(note_id) + ';')
+    
+    db.commit()
+    db.close()
+
+def edit_title(note_id, new_title):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    c.execute('UPDATE notes SET note_title="' + new_title + '" WHERE note_id=' + str(note_id) + ';')
+    
+    db.commit()
+    db.close()
+
+def change_color(note_id, new_color):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    c.execute('UPDATE notes SET color="' + new_color + '" WHERE note_id=' + str(note_id) + ';')
+    
+    db.commit()
+    db.close()
+
+#checks all list items given (item num is the same as the list index)
+def check_boxes(note_id, item_nums):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    for item_num in item_nums:
+        c.execute('UPDATE list SET checked=1 WHERE note_id=' + str(note_id) + ' AND item_num=' + str(item_num) + ';')
+    
+    db.commit()
+    db.close()
+
+def uncheck_boxes(note_id, item_nums):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    for item_num in item_nums:
+        c.execute('UPDATE list SET checked=0 WHERE note_id=' + str(note_id) + ' AND item_num=' + str(item_num) + ';')
+    
+    db.commit()
+    db.close()
+
+#adds image
+def add_image(note_id, image):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    c.execute('UPDATE notes SET image="' + image + '" WHERE note_id=' + str(note_id) + ';')
+    
+    db.commit()
+    db.close()
+
+#deletes image
+def del_image(note_id):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    c.execute('UPDATE notes SET image=NULL WHERE note_id=' + str(note_id) + ';')
     
     db.commit()
     db.close()
@@ -364,26 +495,61 @@ if __name__ == '__main__':
     if not check_username(user):
         add_user('testa', 'hi')
 
-    print check_login('testa', 'hi')
-    print check_login('testa', 'no')
-    print check_login('hi', 'hi')
+    print (check_login('testa', 'hi'))
+    print (check_login('testa', 'no'))
+    print (check_login('hi', 'hi'))
+    print('\n')
 
     #add_note('testa','hi', 'notlist', 'red', False, False, 'Hi')
     #add_note('testa', 'stuff', 'list', 'white', True, True, ['one', 'two', 'three'],'2018-06-01 12:00:00', 'once', [False, False, False], 'https://testlink.jpg')
 
     print (get_nonarch_notes('testa'))
     print (get_arch_notes('testa'))
+    print('\n')
 
-    edit_note_content(0, 'hello')
-    edit_note_content(1, ['uno', 'dos', 'tres'])
+    #edit_note_content(0, 'hi')
+    #edit_note_content(1, ['one', 'two'])
+
+    #edit_title(0, 'hello')
+    #change_color(0, 'blue')
+    
     archive(0)
     unpin(1)
 
     print (get_nonarch_notes('testa'))
     print (get_arch_notes('testa'))
+    print('\n')
 
     unarchive(0)
     pin(1)
     
+    print (get_nonarch_notes('testa'))
+    print (get_arch_notes('testa'))
+    print('\n')
+
+    change_to_list(0)
+    add_note('testa', 'stuff', 'list', 'white', True, True, ['one', 'two', 'three'],'2018-06-01 12:00:00', 'once', [False, False, False], 'https://testlink.jpg')
+
+    print (get_nonarch_notes('testa'))
+    print (get_arch_notes('testa'))
+    print('\n')
+
+    change_to_notlist(0)
+    delete_note(2)
+
+    print (get_nonarch_notes('testa'))
+    print (get_arch_notes('testa'))
+    print('\n')
+
+    add_image(0, 'https://added.png')
+    check_boxes(1, [0])
+
+    print (get_nonarch_notes('testa'))
+    print (get_arch_notes('testa'))
+    print('\n')
+
+    del_image(0)
+    uncheck_boxes(1, [0])
+
     print (get_nonarch_notes('testa'))
     print (get_arch_notes('testa'))
