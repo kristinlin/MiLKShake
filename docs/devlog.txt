@@ -80,3 +80,6 @@ can edit body of note through frontend
 
 mashaZ -- 2018-06-12 15:45
 Finished all planned database functions (add reminder, delete reminder, add label, delete label, get labels, get notes by label)
+
+leviO -- 2018-06-12 16:28
+Edit almost works in backend

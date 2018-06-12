@@ -236,7 +236,6 @@ d3.select("#editText").on("input", function() {
     newText = this.value;
 });
 
-console.log(d3.select('#editConfirm'));
 d3.select("#editConfirm").on("click", function(){
     d3.select("." + selection.getAttribute("class") + "-text")
 	.text(newText)
