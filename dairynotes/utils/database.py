@@ -35,14 +35,13 @@ import os
 #uncheck_boxes(note_id, item_nums) -- unchecks boxes (same as above)
 #add_image(note_id, image) -- note that there can only be one image at a time, so if you add an image when there already is one, it will replace the old one
 #del_image(note_id) -- deletes image of a note
-#
+#add_reminder(note_id, reminder_time, reminder_repeat) -- CAN ALSO BE USED TO CHANGE A REMINDER, reminder time must be in form "YYYY-MM-DD hh:mm:ss", reminder_repeat is a string like "once" or "daily"
+#del_reminder(note_id)
+#get_labels(username) -- gets all labels of user
+#get_notes_by_label(username, label) -- gets notes under label of user (same format as other get notes functions)
+#add_label(note_id, label) -- adds label to note
+#del_label(note_id, label) -- deletes label from note
 
-#functions to write:
-#create new label
-#add label to note
-#remove label
-#add reminder
-#remove reminder
 
 #==========================================================
 '''
@@ -204,8 +203,9 @@ def add_note(username, note_title, note_type, color, pinned, archived, content, 
     db.close()
 
 #GET NOTES
-#returns a list of dictionaries which contain note_id, note_type, order_id, color, pinned, reminder_time, reminder_repeat, image, and content (the keys are these words).
+#returns a list of dictionaries which contain note_id, note_type, order_id, color, pinned, reminder_time, reminder_repeat, image, content, and labels (the keys are these words).
 #if note is a list, content is a list of tuples which contain the list item, the item number (the order in which they are displayed), and checked status (boolean), in that order.
+#labels is a list of labels attached to the note
 
 #in between function - do not use in app.py
 def get_notes_temp(username, archived):
@@ -261,8 +261,15 @@ def get_notes_temp(username, archived):
             i = c.execute(com)
             for stuff in i:
                 content = stuff[0]
-            print(content)
             d['content'] = content
+
+        labels_list = []
+        com2 = 'SELECT label FROM labels WHERE note_id=' + str(note_id) + ';'
+        i2 = c.execute(com2)
+        for labels in i2:
+            labels_list.append(labels[0])
+
+        d['labels'] = labels_list
     
     return notes_list
 
@@ -488,6 +495,163 @@ def del_image(note_id):
     db.commit()
     db.close()
 
+#adds or updates reminder info
+def add_reminder(note_id, reminder_time, reminder_repeat):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    c.execute('UPDATE notes SET reminder_time="' + reminder_time + '", reminder_repeat="' + reminder_repeat + '" WHERE note_id=' + str(note_id) + ';')
+    
+    db.commit()
+    db.close()
+
+#deletes reminder
+def del_reminder(note_id):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    c.execute('UPDATE notes SET reminder_time=NULL, reminder_repeat=NULL WHERE note_id=' + str(note_id) + ';')
+    
+    db.commit()
+    db.close()
+
+    
+#LABELS TABLE STUFF
+
+#returns list of labels that username has
+def get_labels(username):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    command = 'SELECT note_id FROM notes WHERE username="' + username + '";'
+    info = c.execute(command)
+
+    note_ids = []
+    for i in info:
+        note_ids.append(i[0])
+
+    labels = []
+    for note_id in note_ids:
+        command2 = 'SELECT label FROM labels WHERE note_id=' + str(note_id) + ';'
+        info2 = c.execute(command2)
+        for i in info2:
+            labels.append(i[0])
+
+    labels = set(labels)
+    
+    db.close()
+
+    return labels
+
+#returns all notes under a label, same format as other get notes functions
+def get_notes_by_label(username, label):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    command = 'SELECT note_id FROM notes WHERE username="' + username + '";'
+    info = c.execute(command)
+
+    note_ids_user = []
+    for i in info:
+        note_ids_user.append(i[0])
+
+    note_ids = []
+    for note_id_user in note_ids_user:
+        command2 = 'SELECT note_id FROM labels WHERE note_id=' + str(note_id_user) + ' AND label="' + label + '";'
+        info2 = c.execute(command2)
+        for i in info2:
+            note_ids.append(i[0])
+
+    notes = []
+    for note_id in note_ids:
+        d = {}
+        command3 = 'SELECT note_id, note_title, note_type, order_id, color, pinned, archived, reminder_time, reminder_repeat, image FROM notes WHERE note_id=' + str(note_id) + ';'
+        info3 = c.execute(command3)
+        for i in info3:
+            d['note_id'] = i[0]
+            d['note_title'] = i[1]
+            d['note_type'] = i[2]
+            d['order_id'] = i[3]
+            d['color'] = i[4]
+            d['pinned'] = (i[5] == 1)
+            d['archived'] = (i[6] == 1)
+            d['reminder_time'] = i[7]
+            d['reminder_repeat'] = i[8]
+            d['image'] = i[9]
+
+        notes.append(d)
+
+    for d in notes:
+        note_id = d['note_id']
+        if d['note_type'] == 'list':
+            content = []
+            order = []
+            checked = []
+            
+            com = 'SELECT item, item_num, checked FROM list WHERE note_id=' + str(note_id) + ';'
+            i = c.execute(com)
+
+            for item_info in i:
+                content.append(item_info[0])
+                order.append(item_info[1])
+                checked.append((item_info[2] == 1))
+                #content.append((item_info[0], item_info[1], (item_info[2] == 1)))
+
+            d['content'] = content
+            d['order'] = order
+            d['checked'] = checked
+
+        else:
+            content = ''
+            com = 'SELECT content FROM notlist WHERE note_id=' + str(note_id) + ';'
+            i = c.execute(com)
+            for stuff in i:
+                content = stuff[0]
+            d['content'] = content
+
+        labels_list = []
+        com2 = 'SELECT label FROM labels WHERE note_id=' + str(note_id) + ';'
+        i2 = c.execute(com2)
+        for labels in i2:
+            labels_list.append(labels[0])
+
+        d['labels'] = labels_list
+    
+    db.close()
+
+    return notes
+
+#adds a label to a note, can be a new label
+def add_label(note_id, label):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    c.execute('INSERT INTO labels VALUES (?,?)', [note_id, label])
+    
+    db.commit()
+    db.close()
+
+#deletes a label from a note
+def del_label(note_id, label):
+    f=os.path.dirname(__file__) or '.'
+    f+="/../data/app.db"
+    db = sqlite3.connect(f)
+    c = db.cursor()
+
+    c.execute('DELETE FROM labels WHERE note_id=' + str(note_id) + ' AND label="' + label + '";')
+    
+    db.commit()
+    db.close()
 
 if __name__ == '__main__':
     #table_creation()
@@ -539,17 +703,27 @@ if __name__ == '__main__':
 
     print (get_nonarch_notes('testa'))
     print (get_arch_notes('testa'))
+    print (get_labels('testa'))
+    print (get_notes_by_label('testa', 'a'))
     print('\n')
 
     add_image(0, 'https://added.png')
+    add_reminder(0, '2018-06-13 08:00:00', 'once')
+    add_label(0, 'a')
     check_boxes(1, [0])
 
     print (get_nonarch_notes('testa'))
     print (get_arch_notes('testa'))
+    print (get_labels('testa'))
+    print (get_notes_by_label('testa', 'a'))
     print('\n')
 
     del_image(0)
+    del_reminder(0)
+    del_label(0, 'a')
     uncheck_boxes(1, [0])
 
     print (get_nonarch_notes('testa'))
     print (get_arch_notes('testa'))
+    print (get_labels('testa'))
+    print (get_notes_by_label('testa', 'a'))

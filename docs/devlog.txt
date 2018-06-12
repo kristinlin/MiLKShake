@@ -77,3 +77,6 @@ Wrote a bunch of database functions (delete note, change title, change color, ch
 
 leviO -- 2018-06-12 15:04
 can edit body of note through frontend
+
+mashaZ -- 2018-06-12 15:45
+Finished all planned database functions (add reminder, delete reminder, add label, delete label, get labels, get notes by label)
