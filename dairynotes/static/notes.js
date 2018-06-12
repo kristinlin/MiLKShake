@@ -20,6 +20,7 @@ var noteGapVert = 250;
 var curNoteText = "nice";
 var curNoteID = -1;
 var curCheck = 0;
+var newText = "";
 var allNotes = svg.append("notes")
 
 //create array of notes from html
@@ -34,12 +35,10 @@ var getNotes = function(){
     noteContent = noteContent.replace(/None/g,'"None"');
     noteContent = noteContent.replace(/True/g,'"True"');
     noteContent = noteContent.replace(/False/g,'"False"');
-    console.log(noteContent);
     notes = JSON.parse(noteContent);
     //console.log(notes);
     for (note in notes){
 	noteContent = notes[note]['content'];
-	console.log(noteContent);
 	noteTitle = notes[note]['note_title'];
 	noteID = notes[note]['note_id'];
 	noteType = notes[note]['note_type'];
@@ -62,7 +61,6 @@ var getNotes = function(){
 	curTitles.push(noteTitle);
 	curIDs.push(noteID);
 	curTypes.push(noteType);
-	console.log(curContent);
     }
 }
 
@@ -76,8 +74,7 @@ var displayNotes = function(){
 	.attr("height", noteHeight)
 	.attr("width", noteWidth)
 	.attr("fill", "yellow")
-	.attr("id", function(b, d){return "note" + d})
-	.attr("class", "note");
+	.attr("class", function(b, d){return "note" + d})
 }
 
 //display the archive buttons
@@ -101,13 +98,13 @@ var displayButtons = function(){
 	.attr("class", "arch");
     //having the word archive makes the button unclickable
     /*var texts = svg.selectAll("text").data(noteIDs).enter();
-    texts.append("text")
-	.attr("x", function(b, d){return xcors[d%5] + 65})
-	.attr("y", function(){return ycors[ycors.length-1] + 185})
-	.attr("textLength","65")
-	.text(function(b) {return "ARCHIVE"})
-	.attr("fill", "black")
-	.attr("class", "but");*/
+      texts.append("text")
+      .attr("x", function(b, d){return xcors[d%5] + 65})
+      .attr("y", function(){return ycors[ycors.length-1] + 185})
+      .attr("textLength","65")
+      .text(function(b) {return "ARCHIVE"})
+      .attr("fill", "black")
+      .attr("class", "but");*/
 }
 
 //take array of texts and display on screen
@@ -125,6 +122,7 @@ var displayTitles = function(){
 	.attr('dy', 35)
 	.text(function(b, d){return noteTexts[d]})
 	.attr("font-weight", "normal")
+	.attr("class", function(b, d){return "note" + d + "-text"})
 	.append('tspan')
 	.attr('x', function(b, d){return xcors[d%5] + 5})
 	.attr('dy', 40)
@@ -210,7 +208,6 @@ var del = function(){
         window.location.replace(window.location.href);});
 }
 
-
 var selection = "";
 
 getNotes();
@@ -232,6 +229,16 @@ d3.selectAll('rect')
 	    selection = this;
 	    d3.select(this).attr("style", "stroke:black;stroke-width:5");
 	}
-	console.log(selection)
-    });
-console.log(selection != "");
+    }
+       )
+	
+	
+
+d3.select("#editText").on("input", function() {
+    newText = this.value;
+});
+
+console.log(d3.select('#editConfirm'));
+d3.select("#editConfirm").on("click", function(){
+    d3.select("." + selection.getAttribute("class") + "-text")
+	.text(newText)})
