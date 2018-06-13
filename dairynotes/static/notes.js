@@ -15,7 +15,7 @@ var xcors = [];
 var ycors = [0];
 var svgHeight = 100;
 var noteHeight = 200;
-var noteWidth = 150;
+var noteWidth = 185;
 var noteGapHoriz = 200;
 var noteGapVert = 250;
 var curNoteText = "nice";
@@ -69,7 +69,13 @@ var getNotes = function(){
 
 //take array of notes and display on screen
 var displayNotes = function(){
-    var notes = svg.selectAll("rect").data(noteTexts).enter().append("g");
+    var notes = svg.selectAll("rect")
+	.data(noteTexts)
+	.enter()
+	.append("g")
+        .attr("data-toggle", "modal")
+	.attr("data-target", "#editModal");
+
     groups = notes;
     notes.append("rect")
 	.attr("x", function(b, d){return xcors[d%5]})
@@ -78,9 +84,8 @@ var displayNotes = function(){
 	.attr("width", noteWidth)
 	.attr("fill", "yellow")
 	.attr("id", function(b, d){return d})
-	.attr("class", function(b, d){return "note" + d})
-	.attr("data-toggle", "modal")
-	.attr("data-target", "#editModal");
+	.attr("class", function(b, d){return "note" + d});
+
    
 }
 
@@ -226,7 +231,7 @@ var del = function(){
 }
 
 var selection = "";
-
+var selected_thing;
 getNotes();
 initNotes();
 setColor();
@@ -237,10 +242,12 @@ d3.selectAll('rect')
     .on('click', function(d, i) {
 	selection = this;
 	var modal_title = document.getElementById("modalTitle");
-	
+	var modal_body = document.getElementById("modal-body"); 
 	//edit the modal
-	modal_title.innerText = this;
-	
+	var text = this.nextSibling.nextSibling.nextSibling;
+	selected_thing = text;
+	modal_title.innerText = text.childNodes[0].textContent;
+	modal_body.innerText = text.childNodes[1].textContent;
 	/*
 	if(this.getAttribute("style") == "stroke:black;stroke-width:5"){
 	    d3.select(this).attr("style", "");
