@@ -1,5 +1,6 @@
 var addNoteButton = document.getElementById("addNote");
 var svg = d3.select("svg");
+var groups;
 var curContent = [];
 var curTitles = [];
 var curIDs = [];
@@ -22,6 +23,7 @@ var curNoteID = -1;
 var curCheck = 0;
 var newText = "";
 var allNotes = svg.append("notes")
+
 
 //create array of notes from html
 var getNotes = function(){
@@ -67,7 +69,8 @@ var getNotes = function(){
 
 //take array of notes and display on screen
 var displayNotes = function(){
-    var notes = svg.selectAll("rect").data(noteTexts).enter();
+    var notes = svg.selectAll("rect").data(noteTexts).enter().append("g");
+    groups = notes;
     notes.append("rect")
 	.attr("x", function(b, d){return xcors[d%5]})
 	.attr("y", function(){return ycors[ycors.length-1]})
@@ -76,22 +79,25 @@ var displayNotes = function(){
 	.attr("fill", "yellow")
 	.attr("id", function(b, d){return d})
 	.attr("class", function(b, d){return "note" + d})
+	.attr("data-toggle", "modal")
+	.attr("data-target", "#editModal");
+   
 }
 
 //display the archive buttons
 var displayButtons = function(){
-    var arcBut = svg.selectAll("ellipse").data(noteIDs).enter();
-    arcBut.append("ellipse")
-	.attr("cx", function(b, d){return xcors[d%5] + 100})
+    var arcBut = groups.append("ellipse");
+    svg.selectAll("ellipse").data(noteIDs).enter();
+    arcBut.attr("cx", function(b, d){return xcors[d%5] + 100})
 	.attr("cy", function(){return ycors[ycors.length-1] + 180})
 	.attr("rx", 10)
 	.attr("ry", 10)
 	.attr("fill", "pink")
 	.attr("id", function(b){return b})
 	.attr("class", "arch");
-    var delBut = svg.selectAll("circle").data(noteIDs).enter();
-    delBut.append("circle")
-	.attr("cx", function(b, d){return xcors[d%5] + 50})
+    var delBut = groups.append("circle");
+    svg.selectAll("circle").data(noteIDs).enter();
+    delBut.attr("cx", function(b, d){return xcors[d%5] + 50})
 	.attr("cy", function(){return ycors[ycors.length-1] + 180})
 	.attr("r", 10)
 	.attr("fill", "gray")
@@ -110,9 +116,9 @@ var displayButtons = function(){
 
 //take array of texts and display on screen
 var displayTitles = function(){
-    var texts = svg.selectAll("text").data(noteTitles).enter();
-    texts.append("text")
-	.attr("x", function(b, d){return xcors[d%5] + 5})
+    var texts = groups.append("text");
+    svg.selectAll("text").data(noteTitles).enter();
+    texts.attr("x", function(b, d){return xcors[d%5] + 5})
 	.attr("y", function(){return  ycors[ycors.length-1] + 15})
 	.text(function(b, d) {return b})
 	.attr("fill", "black")
@@ -176,9 +182,19 @@ var initNotes = function(){
 	addNote();
     }
 }
+var color_opt = {"Blue": "#274060",
+                 "Red": "#CC4933",
+                 "Orange": "#F86624",
+                 "Yellow": "#E89005",
+                 "Green" : "#5A9367",
+                 "Purple" : "#824C71"};
 
 var setColor = function(){
-    d3.selectAll('rect').attr('fill', function(b, d){return notes[d]["color"]});
+    d3.selectAll('rect').attr('fill',
+			      function(b, d){
+				  console.log(notes[d]["color"]);
+				  return color_opt[notes[d]["color"]];
+			      });
 }
 
 var swapYellow = function(){
@@ -219,6 +235,13 @@ d3.selectAll("circle").on("click",del);
 
 d3.selectAll('rect')
     .on('click', function(d, i) {
+	selection = this;
+	var modal_title = document.getElementById("modalTitle");
+	
+	//edit the modal
+	modal_title.innerText = this;
+	
+	/*
 	if(this.getAttribute("style") == "stroke:black;stroke-width:5"){
 	    d3.select(this).attr("style", "");
 	    selection = ""
@@ -229,8 +252,9 @@ d3.selectAll('rect')
 	    }
 	    selection = this;
 	    d3.select(this).attr("style", "stroke:black;stroke-width:5");
-	}
-    })
+	}*/
+    }
+    );
 
 d3.select("#editText").on("input", function() {
     newText = this.value;
