@@ -1,10 +1,16 @@
 var addNoteButton = document.getElementById("addNote");
 var svg = d3.select("svg");
-var curTexts = [];
+var groups;
+var curContent = [];
 var curTitles = [];
 var curIDs = [];
+var curTypes = [];
+var curChecks = [];
 var noteTexts = [];
+var noteTitles = [];
 var noteIDs = [];
+var noteTypes = [];
+var noteChecks = [];
 var xcors = [];
 var ycors = [0];
 var svgHeight = 100;
@@ -14,114 +20,130 @@ var noteGapHoriz = 200;
 var noteGapVert = 250;
 var curNoteText = "nice";
 var curNoteID = -1;
-var notes = d3.select("svg").selectAll("rect").data(noteTexts).enter();
-var buts = d3.select("svg").selectAll("ellipse").data(curIDs).enter();
-var texts = d3.select("svg").selectAll("text").data(noteTexts).enter();
-var svgContainer = d3.select("svg")
-
+var curCheck = 0;
+var newText = "";
 var allNotes = svg.append("notes")
+
 
 //create array of notes from html
 var getNotes = function(){
     noteContent = document.getElementById("notes").innerHTML;
-    noteContent = noteContent.replace('[','');
-    noteContent = noteContent.replace(']','');
+    //noteContent = noteContent.replace('[','');
+    //noteContent = noteContent.replace(']','');
+    //noteContent = noteContent.replace('(','[');
+    //noteContent = noteContent.replace('),',']');
     noteContent = noteContent.replace(/u'/g,'"');
     noteContent = noteContent.replace(/'/g,'"');
     noteContent = noteContent.replace(/None/g,'"None"');
     noteContent = noteContent.replace(/True/g,'"True"');
     noteContent = noteContent.replace(/False/g,'"False"');
-    //console.log(noteContent);
     notes = JSON.parse(noteContent);
     //console.log(notes);
     for (note in notes){
-	//console.log(notes[note]);
-	//console.log(notes[note]['content']);
 	noteContent = notes[note]['content'];
-	noteTitle = notes[note]['title'];
+	noteTitle = notes[note]['note_title'];
 	noteID = notes[note]['note_id'];
+	noteType = notes[note]['note_type'];
+	//if its a list, make a check X list
+	if (noteType == "list"){
+	    checks = notes[note]['checked'];
+	    checkmarks = [];
+	    for (c in checks){
+		if(checks[c] == "True")
+		    checkmarks.push('✓');
+		else
+		    checkmarks.push('X');
+	    }
+	    curChecks.push(checkmarks);
+	}
+	else
+	    curChecks.push(0);
 	//console.log(noteID);
-	curTexts.push(noteContent);
+	curContent.push(noteContent);
 	curTitles.push(noteTitle);
 	curIDs.push(noteID);
-	//console.log(curIDs);
+	curTypes.push(noteType);
     }
 }
 
 
 //take array of notes and display on screen
 var displayNotes = function(){
-    var notes = svg.selectAll("rect").data(noteTexts).enter();
+    var notes = svg.selectAll("rect").data(noteTexts).enter().append("g");
+    groups = notes;
     notes.append("rect")
 	.attr("x", function(b, d){return xcors[d%5]})
 	.attr("y", function(){return ycors[ycors.length-1]})
 	.attr("height", noteHeight)
 	.attr("width", noteWidth)
 	.attr("fill", "yellow")
-	.attr("id", function(b, d){return "note" + d})
-	.attr("class", "note");
+	.attr("id", function(b, d){return d})
+	.attr("class", function(b, d){return "note" + d})
+	.attr("data-toggle", "modal")
+	.attr("data-target", "#editModal");
+   
 }
 
-//display the unarchive buttons
+//display the archive buttons
 var displayButtons = function(){
-    var arcBut = svg.selectAll("ellipse").data(noteIDs).enter();
-    arcBut.append("ellipse")
-	.attr("cx", function(b, d){return xcors[d%5] + 100})
+    var arcBut = groups.append("ellipse");
+    svg.selectAll("ellipse").data(noteIDs).enter();
+    arcBut.attr("cx", function(b, d){return xcors[d%5] + 100})
 	.attr("cy", function(){return ycors[ycors.length-1] + 180})
 	.attr("rx", 10)
 	.attr("ry", 10)
 	.attr("fill", "pink")
 	.attr("id", function(b){return b})
 	.attr("class", "arch");
-    var delBut = svg.selectAll("circle").data(noteIDs).enter();
-    delBut.append("circle")
-	.attr("cx", function(b, d){return xcors[d%5] + 50})
+    var delBut = groups.append("circle");
+    svg.selectAll("circle").data(noteIDs).enter();
+    delBut.attr("cx", function(b, d){return xcors[d%5] + 50})
 	.attr("cy", function(){return ycors[ycors.length-1] + 180})
 	.attr("r", 10)
 	.attr("fill", "gray")
 	.attr("id", function(b){return b})
 	.attr("class", "arch");
-    //having the word archive makes the button unclickable
-    /*var texts = svg.selectAll("text").data(noteIDs).enter();
-    texts.append("text")
-	.attr("x", function(b, d){return xcors[d%5] + 65})
-	.attr("y", function(){return ycors[ycors.length-1] + 185})
-	.attr("textLength","65")
-	.text(function(b) {return "ARCHIVE"})
-	.attr("fill", "black")
-	.attr("class", "but");*/
 }
-/*
-//display the unarchive buttons
-var displayButtons = function(){
-    console.log(noteTexts);
-    console.log(noteIDs);
-    var buts = svg.selectAll("ellipse").data(noteIDs).enter();
-    buts.append("ellipse")
-	.attr("cx", function(b, d){return xcors[d%5] + 120})
-	.attr("cy", function(){return ycors[ycors.length-1] + 180})
-	.attr("rx", 20)
-	.attr("ry", 10)
-	.attr("fill", "pink")
-	.attr("id", function(b){return b})
-	.attr("class", "but");
-}
-*/
 
 //take array of texts and display on screen
-var displayTexts = function(){
-    var texts = svg.selectAll("text").data(noteTexts).enter();
-    texts.append("text")
-	.attr("x", function(b, d){return xcors[d%5] + 1})
-	.attr("y", function(){return ycors[ycors.length-1] + 15})
-	.text(function(b) {return b})
+var displayTitles = function(){
+    var texts = groups.append("text");
+    svg.selectAll("text").data(noteTitles).enter();
+    texts.attr("x", function(b, d){return xcors[d%5] + 5})
+	.attr("y", function(){return  ycors[ycors.length-1] + 15})
+	.text(function(b, d) {return b})
+	.attr('textLength',function(b, d){
+	    if (b.length < 15) return null
+	    else return 140})
 	.attr("fill", "black")
-	.attr("class", "body")}
+    	.attr("class", "titl")
+	.attr("font-weight", "bold")
+	.append('tspan')
+	.attr('x', function(b, d){return xcors[d%5] + 5})
+	.attr('dy', 35)
+	.text(function(b, d){return noteTexts[d]})
+	.attr("font-weight", "normal")
+    	.attr('textLength',function(b, d){
+	    if (String(noteTexts[d]).length < 15) return null
+	    else return 140})
+	.attr("class", function(b, d){return "note" + d + "-text"})
+	.append('tspan')
+	.attr('x', function(b, d){return xcors[d%5] + 5})
+	.attr('dy', 40)
+	.text(function(b, d) {if (noteChecks[d] == 0){return ''}
+			      else return noteChecks[d]})
+	.attr('textLength',function(b, d){
+	    if (String(noteChecks[d]).length < 15) return null
+	    else return 140})
+	.attr("font-weight", "normal")
+}
 
 //add a new note
-var newNote = function(text,id){
+var newNote = function(text,title,id,checkbox){
     noteTexts.push(text);
+    noteTitles.push(title);
     noteIDs.push(id);
+    noteChecks.push(checkbox);
     if(xcors.length < 5){
 	xcors.push(noteGapHoriz*xcors.length);
     }
@@ -129,15 +151,15 @@ var newNote = function(text,id){
 	xcors = [0]
 	ycors.push(noteGapVert*ycors.length);
 	svgHeight += 500;
-	svgContainer.style("height", svgHeight); 
+	svg.style("height", svgHeight); 
     }
 }
 
 var addNote = function(){
-    newNote(curNoteText,curNoteID);
+    newNote(curNoteText,curNoteTitle,curNoteID,curCheck);
     displayNotes();
-    displayTexts();
     displayButtons();
+    displayTitles();
 }
 
 var changeNoteColor = function(d, i){
@@ -150,18 +172,33 @@ var changeCurNoteText = function(newText){
     curNoteText = newText
 }
 
+//takes array of notes and initializes js notes
 var initNotes = function(){
-    for (text in curTexts){
-	console.log(text);
-	curNoteText = curTexts[text];
+    for (text in curContent){
+	curNoteText = curContent[text];
+	curNoteTitle = curTitles[text];
 	curNoteID = curIDs[text];
+	curCheck = curChecks[text]; 
 	addNote();
     }
-    getNotes();
 }
+var color_opt = {"Blue": "#274060",
+                 "Red": "#CC4933",
+                 "Orange": "#F86624",
+                 "Yellow": "#E89005",
+                 "Green" : "#5A9367",
+                 "Purple" : "#824C71"};
 
 var setColor = function(){
-    d3.selectAll('rect').style('fill', function(b, d){return notes[d]["color"]});
+    d3.selectAll('rect').attr('fill',
+			      function(b, d){
+				  console.log(notes[d]["color"]);
+				  return color_opt[notes[d]["color"]];
+			      });
+}
+
+var swapYellow = function(){
+    d3.select(this).style("fill", "yellow");
 }
 
 //unarchive a note
@@ -176,7 +213,6 @@ var unarchive = function(){
         window.location.replace(window.location.href);});
 }
 
-
 //delete a note
 // send the note id to flask app
 var del = function(){
@@ -188,6 +224,8 @@ var del = function(){
     }).done(function() {
         window.location.replace(window.location.href);});
 }
+
+var selection = "";
 
 getNotes();
 initNotes();

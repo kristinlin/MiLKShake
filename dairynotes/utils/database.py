@@ -309,6 +309,7 @@ def edit_note_content(note_id, new_content, checks=None):
 
     else:
         c.execute('UPDATE notlist SET content="' + new_content + '" WHERE note_id=' + str(note_id) + ';')
+        print new_content
 
     db.commit()
     db.close()

@@ -103,15 +103,6 @@ var displayButtons = function(){
 	.attr("fill", "gray")
 	.attr("id", function(b){return b})
 	.attr("class", "arch");
-    //having the word archive makes the button unclickable
-    /*var texts = svg.selectAll("text").data(noteIDs).enter();
-      texts.append("text")
-      .attr("x", function(b, d){return xcors[d%5] + 65})
-      .attr("y", function(){return ycors[ycors.length-1] + 185})
-      .attr("textLength","65")
-      .text(function(b) {return "ARCHIVE"})
-      .attr("fill", "black")
-      .attr("class", "but");*/
 }
 
 //take array of texts and display on screen
