@@ -121,6 +121,9 @@ var displayTitles = function(){
     texts.attr("x", function(b, d){return xcors[d%5] + 5})
 	.attr("y", function(){return  ycors[ycors.length-1] + 15})
 	.text(function(b, d) {return b})
+	.attr('textLength',function(b, d){
+	    if (b.length < 15) return null
+	    else return 140})
 	.attr("fill", "black")
     	.attr("class", "titl")
 	.attr("font-weight", "bold")
@@ -129,12 +132,18 @@ var displayTitles = function(){
 	.attr('dy', 35)
 	.text(function(b, d){return noteTexts[d]})
 	.attr("font-weight", "normal")
+    	.attr('textLength',function(b, d){
+	    if (String(noteTexts[d]).length < 15) return null
+	    else return 140})
 	.attr("class", function(b, d){return "note" + d + "-text"})
 	.append('tspan')
 	.attr('x', function(b, d){return xcors[d%5] + 5})
 	.attr('dy', 40)
 	.text(function(b, d) {if (noteChecks[d] == 0){return ''}
 			      else return noteChecks[d]})
+	.attr('textLength',function(b, d){
+	    if (String(noteChecks[d]).length < 15) return null
+	    else return 140})
 	.attr("font-weight", "normal")
 }
 
