@@ -1,18 +1,21 @@
 from flask import Flask, render_template, request, session, redirect, url_for, flash
 from utils import database
+import os
 
 app= Flask(__name__)
 
 #temp dictionary of usernames & passwords
 #dict = {'username':'pass'}
 
+
+f=os.path.dirname(__file__) or '.'
 app.secret_key = "idk"
 
 @app.route('/', methods=['POST', 'GET'])
 def root():
     if 'username' in session:
         return redirect(url_for('welcome'))
-    return render_template('base.html',title='Welcome!')
+    return render_template('base.html',title='Welcome!', filename=f+"/static/postits.jpeg")
 
 @app.route('/login')
 def login():
