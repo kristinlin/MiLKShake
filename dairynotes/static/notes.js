@@ -21,7 +21,6 @@ var noteGapVert = 250;
 var curNoteText = "nice";
 var curNoteID = -1;
 var curCheck = 0;
-var newText = "";
 var allNotes = svg.append("notes")
 
 
@@ -183,7 +182,7 @@ var initNotes = function(){
 	addNote();
     }
 }
-var color_opt = {"Blue": "#274060",
+var color_opt = {"Blue": "#3e76d1",
                  "Red": "#CC4933",
                  "Orange": "#F86624",
                  "Yellow": "#E89005",
@@ -225,8 +224,6 @@ var del = function(){
     }).done(function() {
         window.location.replace(window.location.href);});
 }
-
-var selection = "";
 
 getNotes();
 initNotes();

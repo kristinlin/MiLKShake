@@ -57,13 +57,9 @@
 </div>
 <br>
 <br>
-<h3> Your Notes </h3>
-<h4> Click the gray button to delete a note <br>
-  Click the pink button to archive a note <br>
-</h4>
 <!-- Modal -->
 
-<form method="POST" action="/editNote">
+
   <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -75,22 +71,18 @@
           </button>
 	</div>
 	<div  class="modal-body">
-	  <input id="modal-body" name="js_content" type="text">
+	  <input id="editText" name="js_content" type="text">
 	  <input id="selection-id" name="js_id" type="text" hidden>
 	</div>
 	<div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="submit" class="btn btn-primary">Save changes</button>
+          <button id="editConfirm" type="submit" class="btn btn-primary">Save changes</button>
 	</div>
       </div>
     </div>
   </div>
-</form>
 
 
-Select a note, type a new message, then click the button!<br>
-<input type="text" id="editText">
-<button type="button" name="editConfirm" id="editConfirm" value="confirm">Edit!</button>
 
 <br><br>
 

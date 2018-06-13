@@ -90,7 +90,7 @@ item.children[0].addEventListener("click", chval);
 //SELECTING NOTE COLOR
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-var color_opt = {"Blue": "#274060",
+var color_opt = {"Blue": "#3e76d1",
 		 "Red": "#CC4933",
 		 "Orange": "#F86624",
 		 "Yellow": "#E89005",

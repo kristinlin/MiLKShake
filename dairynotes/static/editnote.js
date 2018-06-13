@@ -4,8 +4,9 @@ var selection;
 
 d3.selectAll('rect')
     .on('click', function(d, i) {
+	selection = this;
 	var modal_title = document.getElementById("modalTitle");
-	var modal_body = document.getElementById("modal-body");
+	var modal_body = document.getElementById("editText");
 	var modal_id = document.getElementById("selection-id");
 	//edit the modal
 	var text = this.nextSibling.nextSibling.nextSibling;
@@ -16,19 +17,24 @@ d3.selectAll('rect')
     });
 
 
-/*
+
 d3.select("#editText").on("input", function() {
+    console.log("hi");
     newText = this.value;
 });
 
 d3.select("#editConfirm").on("click", function(){
     d3.select("." + selection.getAttribute("class") + "-text")
 	.text(newText)
-    var note_id = selection.getAttribute("id")
+    var note_id = selection.getAttribute("noteID")
+    console.log("run");
+    console.log(newText);
+    console.log(note_id);
 
     $.post("/editNote", {
 	js_id: note_id, js_content: newText
     }).done(function() {
         window.location.replace(window.location.href);});
+
 })
-*/
+
