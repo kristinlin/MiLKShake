@@ -1,28 +1,21 @@
-d3.selectAll('rect')
-    .on('click', function(d, i) {
-	selection = this;
-	var modal_title = document.getElementById("modalTitle");
-	var modal_body = document.getElementById("modal-body"); 
-	//edit the modal
-	var text = this.nextSibling.nextSibling.nextSibling;
-	selected_thing = text;
-	modal_title.innerText = text.childNodes[0].textContent;
-	modal_body.innerText = text.childNodes[1].textContent;
-	/*
-	if(this.getAttribute("style") == "stroke:black;stroke-width:5"){
-	    d3.select(this).attr("style", "");
-	    selection = ""
-	}
-	else{
-	    if(selection != ""){
-		d3.select(selection).attr("style", "");
-	    }
-	    selection = this;
-	    d3.select(this).attr("style", "stroke:black;stroke-width:5");
-	}*/
-    }
-    );
+var newText = "";
+var selection;
 
+d3.selectAll('rect')
+    .on('click',
+	function(d, i) {
+	    var modal_title = document.getElementById("modalTitle");
+	    var modal_body = document.getElementById("modal-body");
+	    var modal_id = document.getElementById("selection-id");
+	    //edit the modal
+	    var text = this.nextSibling.nextSibling.nextSibling;
+	    modal_title.innerHTML = text.childNodes[0].textContent;
+	    modal_body.value = text.childNodes[1].textContent;
+	    modal_id.value = this.getAttribute("id");
+	}
+       );
+
+/*
 d3.select("#editText").on("input", function() {
     newText = this.value;
 });
@@ -37,3 +30,4 @@ d3.select("#editConfirm").on("click", function(){
     }).done(function() {
         window.location.replace(window.location.href);});
 })
+*/

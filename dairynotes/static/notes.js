@@ -15,7 +15,7 @@ var xcors = [];
 var ycors = [0];
 var svgHeight = 100;
 var noteHeight = 200;
-var noteWidth = 185;
+var noteWidth = 150;
 var noteGapHoriz = 200;
 var noteGapVert = 250;
 var curNoteText = "nice";
@@ -69,13 +69,7 @@ var getNotes = function(){
 
 //take array of notes and display on screen
 var displayNotes = function(){
-    var notes = svg.selectAll("rect")
-	.data(noteTexts)
-	.enter()
-	.append("g")
-        .attr("data-toggle", "modal")
-	.attr("data-target", "#editModal");
-
+    var notes = svg.selectAll("rect").data(noteTexts).enter().append("g");
     groups = notes;
     notes.append("rect")
 	.attr("x", function(b, d){return xcors[d%5]})
@@ -84,8 +78,9 @@ var displayNotes = function(){
 	.attr("width", noteWidth)
 	.attr("fill", "yellow")
 	.attr("id", function(b, d){return d})
-	.attr("class", function(b, d){return "note" + d});
-
+	.attr("class", function(b, d){return "note" + d})
+	.attr("data-toggle", "modal")
+	.attr("data-target", "#editModal");
    
 }
 
@@ -231,49 +226,9 @@ var del = function(){
 }
 
 var selection = "";
-var selected_thing;
+
 getNotes();
 initNotes();
 setColor();
 d3.selectAll("ellipse").on("click", archive);
 d3.selectAll("circle").on("click",del);
-
-d3.selectAll('rect')
-    .on('click', function(d, i) {
-	selection = this;
-	var modal_title = document.getElementById("modalTitle");
-	var modal_body = document.getElementById("modal-body"); 
-	//edit the modal
-	var text = this.nextSibling.nextSibling.nextSibling;
-	selected_thing = text;
-	modal_title.innerText = text.childNodes[0].textContent;
-	modal_body.innerText = text.childNodes[1].textContent;
-	/*
-	if(this.getAttribute("style") == "stroke:black;stroke-width:5"){
-	    d3.select(this).attr("style", "");
-	    selection = ""
-	}
-	else{
-	    if(selection != ""){
-		d3.select(selection).attr("style", "");
-	    }
-	    selection = this;
-	    d3.select(this).attr("style", "stroke:black;stroke-width:5");
-	}*/
-    }
-    );
-
-d3.select("#editText").on("input", function() {
-    newText = this.value;
-});
-
-d3.select("#editConfirm").on("click", function(){
-    d3.select("." + selection.getAttribute("class") + "-text")
-	.text(newText)
-    var note_id = selection.getAttribute("id")
-
-    $.post("/editNote", {
-	js_id: note_id, js_content: newText
-    }).done(function() {
-        window.location.replace(window.location.href);});
-})
