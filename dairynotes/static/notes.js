@@ -78,6 +78,7 @@ var displayNotes = function(){
 	.attr("width", noteWidth)
 	.attr("fill", "yellow")
 	.attr("id", function(b, d){return d})
+	.attr("noteID",function(b, d){return noteIDs[d]})
 	.attr("class", function(b, d){return "note" + d})
 	.attr("data-toggle", "modal")
 	.attr("data-target", "#editModal");
