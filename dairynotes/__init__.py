@@ -18,7 +18,7 @@ def root():
 def login():
     if 'username' in session:
         return redirect(url_for('welcome'))
-    return render_template('login.html',title='Login')
+    return render_template('login.html',title='Login', loggedin = False)
 
 @app.route('/signup', methods = ['POST','GET'])
 def signup():
@@ -49,7 +49,7 @@ def welcome():
         for i in range(0,len(notes)):
             d[str(i)] = notes[i]
         #print d
-        return render_template('welcome.html',username=session['username'],notes=d)
+        return render_template('welcome.html',username=session['username'],notes=d, loggedin=True)
     else:
         try:
             username = request.form['user']
@@ -176,7 +176,7 @@ def archive():
         d = {}
         for i in range(0,len(notes)):
             d[str(i)] = notes[i]
-        return render_template('archive.html',notes=d)
+        return render_template('archive.html',notes=d, loggedin=True)
     else:
         flash('Please login first')
         return redirect(url_for('login'))
