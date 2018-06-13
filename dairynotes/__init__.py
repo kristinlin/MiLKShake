@@ -115,7 +115,7 @@ def deleteNote():
     id = int(jsdata)
     print id
     #change to database delete function later
-    #database.delete(id)
+    database.delete_note(id)
     notes = database.get_nonarch_notes(session['username'])
     print notes
     return redirect(url_for('welcome'))

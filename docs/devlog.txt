@@ -83,3 +83,6 @@ Finished all planned database functions (add reminder, delete reminder, add labe
 
 leviO -- 2018-06-12 16:28
 Edit almost works in backend
+
+sonalP == 2018=06-13 00:07
+Delete note with automatic page refresh
