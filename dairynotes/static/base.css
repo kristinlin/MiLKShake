@@ -24,7 +24,7 @@
 }
 
 #front_page {
-    background-image: url('postits.jpeg');
+    background-image: url(url_for('static', filename='postits.jpeg'));
     height:85%;
     width: 100%;
 }
